@@ -91,9 +91,11 @@ packages:
   safe_device:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "66e49b25753d5306f970344ff5cc965becff64b7"
+      url: "https://github.com/ufukhawk/safe_device.git"
+    source: git
     version: "1.0.0"
   sky_engine:
     dependency: transitive
