@@ -15,7 +15,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** SafeDevicePlugin */
-public class SafeDevicePlugin implements FlutterPlugin, MethodCallHandler {
+public class SafeDevicePlugin implements MethodCallHandler {
   private final Context context;
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "safe_device");
