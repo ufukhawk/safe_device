@@ -2,7 +2,7 @@ name: safe_device
 description: Jailbroken, root, emulator and mock location detection
 version: 1.0.0
 author: Ufuk Zimmerman <ufukzimmerman@gmail.com>
-homepage:
+homepage: https://github.com/ufukhawk/safe_device
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
