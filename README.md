@@ -1,4 +1,5 @@
-# safe_device (Null-Safety)
+# safe_device (Null-Safety) <a href="https://pub.dev/packages/safe_device" src="https://img.shields.io/badge/pub-1.0.0-blue"></a>
+
 
 Flutter (Null-Safety)Jailbroken, root, emulator and mock location detection.
 
