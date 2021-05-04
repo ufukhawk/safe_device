@@ -34,12 +34,12 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
   }
 
   LocaleListResolutionCallback listResolution(
-      {required Locale fallback, bool withCountry = true}) {
+      {Locale? fallback, bool withCountry = true}) {
     return (List<Locale>? locales, Iterable<Locale> supported) {
       if (locales == null || locales.isEmpty) {
         return fallback ?? supported.first;
       } else {
-        return _resolve(locales.first, fallback, supported, withCountry);
+        return _resolve(locales.first, fallback!, supported, withCountry);
       }
     };
   }
