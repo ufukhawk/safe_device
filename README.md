@@ -1,6 +1,6 @@
-# safe_device
+# safe_device (Null-Safety)
 
-Jailbroken, root, emulator and mock location detection.
+Flutter (Null-Safety)Jailbroken, root, emulator and mock location detection.
 
 Uses [RootBeer](https://github.com/scottyab/rootbeer) for Android root detection and [DTTJailbreakDetection](https://github.com/thii/DTTJailbreakDetection) for iOS jailbreak detection.
 Inspired by [jail-monkey](https://github.com/GantMan/jail-monkey) and [this blog article](http://blog.geomoby.com/2015/01/25/how-to-avoid-getting-your-location-based-app-spoofed/)
