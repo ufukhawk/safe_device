@@ -9,3 +9,7 @@
 ## 1.0.2
 
 * iOS bug fix.
+
+## 1.0.3
+
+* iOS bug fix.
