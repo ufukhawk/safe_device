@@ -1,4 +1,5 @@
 #import "SafeDevicePlugin.h"
+#import <DTTJailbreakDetection/DTTJailbreakDetection.h>
 
 @implementation SafeDevicePlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {

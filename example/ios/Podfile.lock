@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - safe_device (1.0.0):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - safe_device (from `.symlinks/plugins/safe_device/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  safe_device:
+    :path: ".symlinks/plugins/safe_device/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  safe_device: 318f1d9e1a8bb2d9e99d154b212e022c91c286af
+
+PODFILE CHECKSUM: db53a61873f4883e55162c97fa6109752cb960ef
+
+COCOAPODS: 1.10.0
