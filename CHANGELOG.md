@@ -1,15 +1,17 @@
-## 1.0.0
+## 1.0.3
 
-* Flutter Jailbroken, root, emulator and mock location detection.
-
-## 1.0.1
-
-* Small Changes.
+* iOS bug fix.
 
 ## 1.0.2
 
 * iOS bug fix.
 
-## 1.0.3
+## 1.0.1
 
-* iOS bug fix.
+* Small Changes.
+
+## 1.0.0
+
+* Flutter Jailbroken, root, emulator and mock location detection.
+
+
