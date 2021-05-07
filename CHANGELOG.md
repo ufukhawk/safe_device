@@ -1,3 +1,7 @@
+## 1.0.4
+
+* Small Changes.
+
 ## 1.0.3
 
 * iOS bug fix.

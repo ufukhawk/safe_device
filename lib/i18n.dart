@@ -74,7 +74,7 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
   ///
   /// Internal method to resolve a locale from a list of locales.
   ///
-  Locale _resolve(Locale locale, Locale fallback, Iterable<Locale> supported,
+  Locale _resolve(Locale? locale, Locale? fallback, Iterable<Locale> supported,
       bool withCountry) {
     if (locale == null || !_isSupported(locale, withCountry)) {
       return fallback ?? supported.first;
@@ -94,7 +94,7 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
   ///
   /// Returns true if the specified locale is supported, false otherwise.
   ///
-  bool _isSupported(Locale locale, bool withCountry) {
+  bool _isSupported(Locale? locale, bool withCountry) {
     if (locale != null) {
       for (Locale supportedLocale in supportedLocales) {
         // Language must always match both locales.
