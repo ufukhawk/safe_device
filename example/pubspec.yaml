@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
 
   safe_device:
-    git: https://github.com/ufukhawk/safe_device.git
+    path: ../
   location_permissions : 4.0.0
 
 dev_dependencies:

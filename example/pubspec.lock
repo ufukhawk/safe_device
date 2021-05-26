@@ -91,12 +91,10 @@ packages:
   safe_device:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "1ccd7d91259fd182ee2b90b05764a971a9d1bfac"
-      url: "https://github.com/ufukhawk/safe_device.git"
-    source: git
-    version: "1.0.4"
+      path: ".."
+      relative: true
+    source: path
+    version: "1.0.6"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -144,6 +142,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+  trust_location:
+    dependency: transitive
+    description:
+      name: trust_location
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.13"
   typed_data:
     dependency: transitive
     description:
