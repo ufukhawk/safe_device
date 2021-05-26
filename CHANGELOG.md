@@ -1,3 +1,7 @@
+## 1.0.5
+
+* 'Example' codes in the project have been edited and location permission request has been added for Mock Location control.
+
 ## 1.0.4
 
 * Small Changes.
