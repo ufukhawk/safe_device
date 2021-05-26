@@ -7,7 +7,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "2.6.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -43,13 +43,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -67,6 +60,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  location_permissions:
+    dependency: "direct main"
+    description:
+      name: location_permissions
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
   matcher:
     dependency: transitive
     description:
@@ -93,10 +93,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "66e49b25753d5306f970344ff5cc965becff64b7"
+      resolved-ref: "1ccd7d91259fd182ee2b90b05764a971a9d1bfac"
       url: "https://github.com/ufukhawk/safe_device.git"
     source: git
-    version: "1.0.0"
+    version: "1.0.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -108,7 +108,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   stack_trace:
     dependency: transitive
     description:
@@ -143,7 +143,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.19"
+    version: "0.3.0"
   typed_data:
     dependency: transitive
     description:

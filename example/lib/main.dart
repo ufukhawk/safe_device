@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:location_permissions/location_permissions.dart';
+import 'package:safe_device/safe_device.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
@@ -15,13 +15,42 @@ class _MyAppState extends State<MyApp> {
   bool isRealDevice = true;
   bool isOnExternalStorage = false;
   bool isSafeDevice = false;
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
+
+  Future<void> initPlatformState() async {
+    PermissionStatus permission =
+        await LocationPermissions().requestPermissions();
+
+    if (!mounted) return;
+    try {
+      isJailBroken = await SafeDevice.isJailBroken;
+      canMockLocation = await SafeDevice.canMockLocation;
+      isRealDevice = await SafeDevice.isRealDevice;
+      isOnExternalStorage = await SafeDevice.isOnExternalStorage;
+      isSafeDevice = await SafeDevice.isSafeDevice;
+    } catch (error) {
+      print(error);
+    }
+
+    setState(() {
+      isJailBroken = isJailBroken;
+      canMockLocation = canMockLocation;
+      isRealDevice = isRealDevice;
+      isOnExternalStorage = isOnExternalStorage;
+      isSafeDevice = isSafeDevice;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Safe Device check'),
+          title: const Text('Device Safe check'),
         ),
         body: Center(
           child: Card(
