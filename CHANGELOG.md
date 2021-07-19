@@ -1,3 +1,7 @@
+## 1.0.7
+
+* Emulator detection error solved.
+
 ## 1.0.6
 
 * Mock Location detection error solved.
