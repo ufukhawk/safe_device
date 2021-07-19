@@ -1,34 +1,62 @@
 package com.xamdesign.safe_device.MockLocationCheck;
 
+import java.util.List;
 import android.os.Build;
 import android.content.Context;
 import android.provider.Settings;
+import android.content.pm.PackageManager;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.util.Log;
+import java.lang.Exception;
 
 public class MockLocationCheck {
     /**
-     * Checks if the device is rooted.
+     * Checks if the device can mock location.
      *
-     * @return <code>true</code> if the device is rooted, <code>false</code> otherwise.
+     * @return <code>true</code> if the device can mock locaktion, <code>false</code> otherwise.
      */
     public static boolean canMockLocation(Context context) {
-        boolean check;
+        return checkSettings(context) || areThereMockPermissionApps(context);
+    }
 
-        if (Build.VERSION.SDK_INT >= 18) {
-            check = checkEqualOrGreaterThan18(context);
-        } else {
-            check = checkLessThan18(context);
+    static boolean checkSettings(Context context) {
+    	return !Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("0");
+    }
+
+    static boolean areThereMockPermissionApps(Context context) {
+        int count = 0;
+
+        PackageManager pm = context.getPackageManager();
+        List<ApplicationInfo> packages =
+            pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        for (ApplicationInfo applicationInfo : packages) {
+            try {
+                PackageInfo packageInfo = pm.getPackageInfo(applicationInfo.packageName,
+                                                            PackageManager.GET_PERMISSIONS);
+
+                // Get Permissions
+                String[] requestedPermissions = packageInfo.requestedPermissions;
+
+                if (requestedPermissions != null) {
+                    for (int i = 0; i < requestedPermissions.length; i++) {
+                        if (requestedPermissions[i]
+                            .equals("android.permission.ACCESS_MOCK_LOCATION")
+                            && !applicationInfo.packageName.equals(context.getPackageName())) {
+                            count++;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Log.v("Exception looking for MockPermissionApps" , e.getMessage());
+            }
         }
-        return check;
-    }
 
-    static boolean checkLessThan18(Context context) {
-    	return !Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("0");
-    }
+        if (count > 0)
+            return true;
 
-    // This doesn't really work. Should check each location.
-    // 	return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && location != null && location.isFromMockProvider();
-    static boolean checkEqualOrGreaterThan18(Context context) {
-    	return !Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("0");
+        return false;
     }
 }
 
