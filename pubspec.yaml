@@ -1,7 +1,6 @@
 name: safe_device
 description: With the Flutter safe_device package, you can easily implement security steps such as Jailbroken, root, emulator and fake location detection.
-version: 1.0.7
-author: Ufuk Zimmerman <ufukzimmerman@gmail.com>
+version: 1.0.8
 homepage: https://github.com/ufukhawk/safe_device
 
 environment:
@@ -11,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  trust_location : 2.0.13 #for mock location (for now)
+  trust_location : ^2.0.13 #for mock location (for now)
 
 dev_dependencies:
   flutter_test:

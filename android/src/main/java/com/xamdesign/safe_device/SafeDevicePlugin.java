@@ -1,28 +1,33 @@
 package com.xamdesign.safe_device;
 
 import android.content.Context;
-import android.location.Location;
-
+import androidx.annotation.NonNull;
 import com.xamdesign.safe_device.Emulator.EmulatorCheck;
 import com.xamdesign.safe_device.ExternalStorage.ExternalStorageCheck;
 import com.xamdesign.safe_device.Rooted.RootedCheck;
-
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** SafeDevicePlugin */
-public class SafeDevicePlugin implements MethodCallHandler {
-  private final Context context;
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "safe_device");
-    channel.setMethodCallHandler(new SafeDevicePlugin(registrar.context()));
+public class SafeDevicePlugin implements FlutterPlugin, MethodCallHandler {
+  private Context context;
+
+  @Override
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+    this.context = binding.getApplicationContext();
+    final MethodChannel channel = new MethodChannel(
+            binding.getBinaryMessenger(),
+            "safe_device"
+    );
+    channel.setMethodCallHandler(this);
   }
 
-  private SafeDevicePlugin(Context context){
-    this.context = context;
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    context = null;
   }
 
   @Override

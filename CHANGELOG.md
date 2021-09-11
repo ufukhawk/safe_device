@@ -1,3 +1,7 @@
+## 1.0.8
+
+* Android v2 error solved.
+
 ## 1.0.7
 
 * Emulator detection error solved.
