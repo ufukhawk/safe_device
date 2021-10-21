@@ -35,15 +35,17 @@ class SafeDevice {
   // Check if device violates any of the above
   static Future<bool> get isSafeDevice async {
     final bool isJailBroken = await _channel.invokeMethod('isJailBroken');
-    final bool canMockLocation = await _channel.invokeMethod('canMockLocation');
+    final bool canMockLocation = await TrustLocation.isMockLocation;
     final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
     if (Platform.isAndroid) {
       final bool isOnExternalStorage =
           await _channel.invokeMethod('isOnExternalStorage');
       return isJailBroken ||
-          canMockLocation ||
-          !isRealDevice ||
-          isOnExternalStorage;
+              canMockLocation ||
+              !isRealDevice ||
+              isOnExternalStorage == true
+          ? false
+          : true;
     } else {
       return isJailBroken || canMockLocation || !isRealDevice;
     }
