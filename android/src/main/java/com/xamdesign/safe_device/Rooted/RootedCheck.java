@@ -8,7 +8,9 @@ import android.os.Build;
 public class RootedCheck {
     private static final String ONEPLUS = "oneplus";
     private static final String MOTO = "moto";
-    private static final String XIAOMI = "Xiaomi";
+    private static final String XIAOMI = "xiaomi";
+    private static final String LENOVO = "lenovo";
+
 
     /**
      * Checks if the device is rooted.
@@ -26,10 +28,11 @@ public class RootedCheck {
         return check.checkRooted() || rootBeerCheck(context);
     }
 
-    private static boolean rootBeerCheck(Context context) {
+    private static Boolean rootBeerCheck(Context context) {
         RootBeer rootBeer = new RootBeer(context);
-        Boolean rv;
-        if(Build.BRAND.contains(ONEPLUS) || Build.BRAND.contains(MOTO) || Build.BRAND.contains(XIAOMI)) {
+        boolean rv;
+
+        if(Build.BRAND.toLowerCase().contains(ONEPLUS) || Build.BRAND.toLowerCase().contains(MOTO) || Build.BRAND.toLowerCase().contains(XIAOMI) || Build.BRAND.toLowerCase().contains(LENOVO)) {
             rv = rootBeer.isRootedWithoutBusyBoxCheck();
         } else {
             rv = rootBeer.isRooted();

@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Android detect root bug fix.
+
 ## 1.0.9
 
 * Android mock location error solved.
