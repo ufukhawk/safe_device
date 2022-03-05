@@ -28,6 +28,6 @@ android {
         minSdkVersion 21
     }
     dependencies {
-        implementation 'com.scottyab:rootbeer-lib:0.0.7'
+        implementation 'com.scottyab:rootbeer-lib:0.1.0'
     }
 }
