@@ -2,6 +2,8 @@ package com.xamdesign.safe_device;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+
+import com.xamdesign.safe_device.DevelopmentMode.DevelopmentModeCheck;
 import com.xamdesign.safe_device.Emulator.EmulatorCheck;
 import com.xamdesign.safe_device.ExternalStorage.ExternalStorageCheck;
 import com.xamdesign.safe_device.Rooted.RootedCheck;
@@ -40,8 +42,9 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodCallHandler {
       result.success(!EmulatorCheck.isEmulator());
     }else if (call.method.equals("isOnExternalStorage")) {
       result.success(ExternalStorageCheck.isOnExternalStorage(context));
-    }
-    else {
+    }else if(call.method.equals("isDevelopmentModeEnable"))  {
+      result.success(DevelopmentModeCheck.developmentModeCheck(context));
+    }else {
       result.notImplemented();
     }
   }

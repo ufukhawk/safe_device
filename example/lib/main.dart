@@ -15,6 +15,7 @@ class _MyAppState extends State<MyApp> {
   bool isRealDevice = true;
   bool isOnExternalStorage = false;
   bool isSafeDevice = false;
+  bool isDevelopmentModeEnable = false;
   @override
   void initState() {
     super.initState();
@@ -32,6 +33,7 @@ class _MyAppState extends State<MyApp> {
       isRealDevice = await SafeDevice.isRealDevice;
       isOnExternalStorage = await SafeDevice.isOnExternalStorage;
       isSafeDevice = await SafeDevice.isSafeDevice;
+      isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
     } catch (error) {
       print(error);
     }
@@ -42,6 +44,7 @@ class _MyAppState extends State<MyApp> {
       isRealDevice = isRealDevice;
       isOnExternalStorage = isOnExternalStorage;
       isSafeDevice = isSafeDevice;
+      isDevelopmentModeEnable = isDevelopmentModeEnable;
     });
   }
 
@@ -133,6 +136,22 @@ class _MyAppState extends State<MyApp> {
                       ),
                       Text(
                         '${isSafeDevice ? "Yes" : "False"}',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('isDevelopmentModeEnable():'),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        '${isDevelopmentModeEnable ? "Yes" : "False"}',
                         style: TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ],
