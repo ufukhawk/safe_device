@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Added development mode for Android.
+
 ## 1.1.0
 
 * Android detect root bug fix.

@@ -23,9 +23,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    PermissionStatus permission =
-        await LocationPermissions().requestPermissions();
-
+    await LocationPermissions().requestPermissions();
     if (!mounted) return;
     try {
       isJailBroken = await SafeDevice.isJailBroken;
