@@ -42,7 +42,8 @@ Check if device violates any of the above
 ```
 bool isSafeDevice = await SafeDevice.isSafeDevice;
 ```
-// (ANDROID ONLY) Check if development Options is enable on device
+(ANDROID ONLY) Check if development Options is enable on device
+```
 bool isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
 ```
 
@@ -51,7 +52,7 @@ bool isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
 * **Android** - Location permission needs to be granted in app in order to detect mock location properly
 * **iOS** - For now we are checking if device is Jail Broken or if it's not real device. There is no strong detection of mock location in iOS *(Open the PR if you have better way for mock location detection in iOS)*
 ### DevelopmentMode
-* -Development Options in emulator always is true
+* -Development Options in emulator always is true for default
 
 ## ❗Since emulators are usually rooted, you might want to bypass these checks during development. Unless you're keen on constant false alarms ⏰
 
