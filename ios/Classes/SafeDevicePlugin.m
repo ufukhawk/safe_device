@@ -32,6 +32,6 @@
 }
 
 - (BOOL) isRealDevice{
-    return !TARGET_OS_SIMULATOR;
+    return ![[self model] isEqualToString:@"iPhone Simulator"];
 }
 @end
