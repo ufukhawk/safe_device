@@ -18,7 +18,7 @@ class SafeDevice {
     if (Platform.isAndroid) {
       return await TrustLocation.isMockLocation;
     } else {
-      return await isRealDevice || await isJailBroken;
+      return !await isRealDevice || await isJailBroken;
     }
   }
 
@@ -39,8 +39,8 @@ class SafeDevice {
   static Future<bool> get isSafeDevice async {
     final bool isJailBroken = await _channel.invokeMethod('isJailBroken');
     final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
+    final bool canMockLocation = await SafeDevice.canMockLocation;
     if (Platform.isAndroid) {
-      final bool canMockLocation = await TrustLocation.isMockLocation;
       final bool isOnExternalStorage =
           await _channel.invokeMethod('isOnExternalStorage');
       return isJailBroken ||
@@ -50,7 +50,7 @@ class SafeDevice {
           ? false
           : true;
     } else {
-      return isJailBroken || !isRealDevice;
+      return isJailBroken || !isRealDevice || canMockLocation;
     }
   }
 
