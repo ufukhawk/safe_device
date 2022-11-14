@@ -15,8 +15,11 @@ class SafeDevice {
 
   //Can this device mock location - no need to root!
   static Future<bool> get canMockLocation async {
-    final bool canMockLocation = await TrustLocation.isMockLocation;
-    return canMockLocation;
+    if (Platform.isAndroid) {
+      return await TrustLocation.isMockLocation;
+    } else {
+      return !await isRealDevice || await isJailBroken;
+    }
   }
 
   // Checks whether device is real or emulator
@@ -24,7 +27,6 @@ class SafeDevice {
     final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
     return isRealDevice;
   }
-
 
   // (ANDROID ONLY) Check if application is running on external storage
   static Future<bool> get isOnExternalStorage async {
@@ -36,8 +38,8 @@ class SafeDevice {
   // Check if device violates any of the above
   static Future<bool> get isSafeDevice async {
     final bool isJailBroken = await _channel.invokeMethod('isJailBroken');
-    final bool canMockLocation = await TrustLocation.isMockLocation;
     final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
+    final bool canMockLocation = await SafeDevice.canMockLocation;
     if (Platform.isAndroid) {
       final bool isOnExternalStorage =
           await _channel.invokeMethod('isOnExternalStorage');
@@ -48,13 +50,14 @@ class SafeDevice {
           ? false
           : true;
     } else {
-      return isJailBroken || canMockLocation || !isRealDevice;
+      return isJailBroken || !isRealDevice || canMockLocation;
     }
   }
 
   // (ANDROID ONLY) Check if development Options is enable on device
   static Future<bool> get isDevelopmentModeEnable async {
-    final bool isDevelopmentModeEnable = await _channel.invokeMethod('isDevelopmentModeEnable');
+    final bool isDevelopmentModeEnable =
+        await _channel.invokeMethod('isDevelopmentModeEnable');
     return isDevelopmentModeEnable;
   }
 }

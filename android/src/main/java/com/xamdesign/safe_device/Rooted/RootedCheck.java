@@ -30,14 +30,13 @@ public class RootedCheck {
 
     private static Boolean rootBeerCheck(Context context) {
         RootBeer rootBeer = new RootBeer(context);
-        boolean rv;
-
-        if(Build.BRAND.toLowerCase().contains(ONEPLUS) || Build.BRAND.toLowerCase().contains(MOTO) || Build.BRAND.toLowerCase().contains(XIAOMI) || Build.BRAND.toLowerCase().contains(LENOVO)) {
-            rv = rootBeer.isRootedWithoutBusyBoxCheck();
+        
+        String brand = Build.BRAND.toLowerCase();
+        if(brand.contains(ONEPLUS) || brand.contains(MOTO) || brand.contains(XIAOMI) || brand.contains(LENOVO)) {
+            return rootBeer.isRootedWithoutBusyBoxCheck();
         } else {
-            rv = rootBeer.isRooted();
+            return rootBeer.isRooted();
         }
-        return rv;
     }
 }
 
