@@ -15,8 +15,11 @@ class SafeDevice {
 
   //Can this device mock location - no need to root!
   static Future<bool> get canMockLocation async {
-    final bool canMockLocation = await TrustLocation.isMockLocation;
-    return canMockLocation;
+    if (Platform.isAndroid) {
+      return await TrustLocation.isMockLocation;
+    } else {
+      return await isRealDevice || await isJailBroken;
+    }
   }
 
   // Checks whether device is real or emulator
