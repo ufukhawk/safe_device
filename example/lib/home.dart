@@ -8,7 +8,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool isJailBroken = false;
-  bool canMockLocation = false;
+  //bool canMockLocation = false;
   bool isRealDevice = true;
   bool isOnExternalStorage = false;
   bool isSafeDevice = false;
@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
     // Platform messages may fail, so we use a try/catch PlatformException.ßß
     try {
       isJailBroken = await SafeDevice.isJailBroken;
-      canMockLocation = await SafeDevice.canMockLocation;
+      //canMockLocation = await SafeDevice.canMockLocation;
       isRealDevice = await SafeDevice.isRealDevice;
       isOnExternalStorage = await SafeDevice.isOnExternalStorage;
       isSafeDevice = await SafeDevice.isSafeDevice;
@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
 
     setState(() {
       isJailBroken = isJailBroken;
-      canMockLocation = canMockLocation;
+      //canMockLocation = canMockLocation;
       isRealDevice = isRealDevice;
       isOnExternalStorage = isOnExternalStorage;
       isSafeDevice = isSafeDevice;
@@ -71,22 +71,22 @@ class _HomeState extends State<Home> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('canMockLocation():'),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    '${canMockLocation ? "Yes" : "No"}',
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
+              // SizedBox(
+              //   height: 8,
+              // ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     Text('canMockLocation():'),
+              //     SizedBox(
+              //       width: 8,
+              //     ),
+              //     Text(
+              //       '${canMockLocation ? "Yes" : "No"}',
+              //       style: TextStyle(fontWeight: FontWeight.w600),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 8,
               ),
