@@ -1,3 +1,7 @@
+## 1.1.4
+
+* Bug Fix
+
 ## 1.1.3
 
 * Updated Flutter and Dart version.
