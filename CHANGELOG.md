@@ -1,3 +1,8 @@
+## 1.1.3
+
+* Updated Flutter and Dart version.
+* Changed location permission request package.
+
 ## 1.1.1
 
 * Added development mode for Android.
@@ -24,7 +29,8 @@
 
 ## 1.0.5
 
-* 'Example' codes in the project have been edited and location permission request has been added for Mock Location control.
+* 'Example' codes in the project have been edited and location permission request has been added for
+  Mock Location control.
 
 ## 1.0.4
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:location_permissions/location_permissions.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_device/safe_device.dart';
 
 void main() => runApp(MyApp());
@@ -16,6 +16,7 @@ class _MyAppState extends State<MyApp> {
   bool isOnExternalStorage = false;
   bool isSafeDevice = false;
   bool isDevelopmentModeEnable = false;
+
   @override
   void initState() {
     super.initState();
@@ -23,7 +24,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    await LocationPermissions().requestPermissions();
+    await Permission.location.request();
+    if (await Permission.location.isPermanentlyDenied) {
+      openAppSettings();
+    }
+
     if (!mounted) return;
     try {
       isJailBroken = await SafeDevice.isJailBroken;
