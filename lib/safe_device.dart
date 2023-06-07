@@ -36,7 +36,7 @@ class SafeDevice {
   }
 
   // Check if device violates any of the above
-  static Future<bool> get isSafeDevice async {
+  static Future<bool> get isUnsafeDevice async {
     final bool isJailBroken = await _channel.invokeMethod('isJailBroken');
     final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
     final bool canMockLocation = await SafeDevice.canMockLocation;
