@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  trust_location: ^2.0.13 #for mock location (for now)
+#  trust_location: ^2.0.13 #for mock location (for now)
 
 dev_dependencies:
   flutter_test:
