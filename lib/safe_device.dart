@@ -37,21 +37,14 @@ class SafeDevice {
 
   // Check if device violates any of the above
   static Future<bool> get isSafeDevice async {
-    final bool isJailBroken = await _channel.invokeMethod('isJailBroken');
-    final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
-    final bool canMockLocation = await SafeDevice.canMockLocation;
-    if (Platform.isAndroid) {
-      final bool isOnExternalStorage =
-          await _channel.invokeMethod('isOnExternalStorage');
-      return isJailBroken ||
-              canMockLocation ||
-              !isRealDevice ||
-              isOnExternalStorage == true
-          ? false
-          : true;
-    } else {
-      return isJailBroken || !isRealDevice || canMockLocation;
-    }
+    // Mock location isn't working properly hence, it will be kept separate. and not here.
+    // final bool canMockLocation = await SafeDevice.canMockLocation;
+    final bool isJailBroken = await SafeDevice.isJailBroken;
+    final bool isRealDevice = await SafeDevice.isRealDevice;
+    // When its Android, only at that time it requires to check externalStorage.
+    final bool isOnExternalStorage =
+        Platform.isAndroid && await SafeDevice.isOnExternalStorage;
+    return !isJail && isRealDevice && !isOnExternalStorage;
   }
 
   // (ANDROID ONLY) Check if development Options is enable on device
