@@ -44,6 +44,8 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodCallHandler {
       result.success(ExternalStorageCheck.isOnExternalStorage(context));
     }else if(call.method.equals("isDevelopmentModeEnable"))  {
       result.success(DevelopmentModeCheck.developmentModeCheck(context));
+    }else if(call.method.equals("usbDebuggingCheck"))  {
+      result.success(DevelopmentModeCheck.usbDebuggingCheck(context));
     }else {
       result.notImplemented();
     }

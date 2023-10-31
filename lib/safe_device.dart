@@ -60,4 +60,11 @@ class SafeDevice {
         await _channel.invokeMethod('isDevelopmentModeEnable');
     return isDevelopmentModeEnable;
   }
+
+  // (ANDROID ONLY) Check if development Options is enable on device
+  static Future<bool> get usbDebuggingCheck async {
+    final bool usbDebuggingCheck =
+        await _channel.invokeMethod('usbDebuggingCheck');
+    return usbDebuggingCheck;
+  }
 }
