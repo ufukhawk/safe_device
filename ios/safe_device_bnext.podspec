@@ -2,7 +2,7 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
 #
 Pod::Spec.new do |s|
-  s.name             = 'safe_device'
+  s.name             = 'safe_device_bnext'
   s.version          = '1.0.0'
   s.summary          = 'Jailbroken, root, emulator and mock location detection'
   s.description      = <<-DESC
