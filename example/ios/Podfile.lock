@@ -1,7 +1,7 @@
 PODS:
   - DTTJailbreakDetection (0.4.0)
   - Flutter (1.0.0)
-  - permission_handler_apple (9.0.4):
+  - permission_handler_apple (9.3.0):
     - Flutter
   - safe_device (1.0.0):
     - DTTJailbreakDetection
@@ -27,10 +27,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  permission_handler_apple: 036b856153a2b1f61f21030ff725f3e6fece2b78
   safe_device: 4539eb6bdbeb4b61a763a51c4e73e6b37dea4e3d
 
-PODFILE CHECKSUM: 6bb209e8625d204b220bba6182c55e77daa45536
+PODFILE CHECKSUM: ab451996734f2a40addd614ee3db16206a15ff1e
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.3

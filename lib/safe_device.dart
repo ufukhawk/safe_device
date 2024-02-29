@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:trust_location/trust_location.dart';
 
 class SafeDevice {
   static const MethodChannel _channel = const MethodChannel('safe_device');
@@ -14,9 +13,10 @@ class SafeDevice {
   }
 
   //Can this device mock location - no need to root!
-  static Future<bool> get canMockLocation async {
+  static Future<bool> get isMockLocation async {
     if (Platform.isAndroid) {
-      return await TrustLocation.isMockLocation;
+      final bool isMockLocation = await _channel.invokeMethod('isMockLocation');
+      return isMockLocation ;
     } else {
       return !await isRealDevice || await isJailBroken;
     }
@@ -39,7 +39,7 @@ class SafeDevice {
   static Future<bool> get isSafeDevice async {
     final bool isJailBroken = await _channel.invokeMethod('isJailBroken');
     final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
-    final bool canMockLocation = await SafeDevice.canMockLocation;
+    final bool canMockLocation = await isMockLocation;
     if (Platform.isAndroid) {
       final bool isOnExternalStorage =
           await _channel.invokeMethod('isOnExternalStorage');
@@ -56,8 +56,17 @@ class SafeDevice {
 
   // (ANDROID ONLY) Check if development Options is enable on device
   static Future<bool> get isDevelopmentModeEnable async {
+    if (Platform.isIOS) return false;
     final bool isDevelopmentModeEnable =
         await _channel.invokeMethod('isDevelopmentModeEnable');
     return isDevelopmentModeEnable;
+  }
+
+  // (ANDROID ONLY) Check if development Options is enable on device
+  static Future<bool> get usbDebuggingCheck async {
+    if (Platform.isIOS) return false;
+    final bool usbDebuggingCheck =
+        await _channel.invokeMethod('usbDebuggingCheck');
+    return usbDebuggingCheck;
   }
 }

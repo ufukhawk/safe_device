@@ -16,7 +16,7 @@ dependencies:
 
   safe_device:
     path: ../
-  permission_handler: ^10.2.0
+  permission_handler: ^11.3.0
 
 dev_dependencies:
   flutter_test:
