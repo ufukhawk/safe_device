@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:safe_device/safe_device.dart';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -42,8 +41,6 @@ class _MyAppState extends State<MyApp> {
     } catch (error) {
       print(error);
     }
-
-
   }
 
   @override

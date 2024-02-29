@@ -1,6 +1,6 @@
 # safe_device (Null-Safety)
 
-<a href="https://pub.dev/packages/safe_device"><img src="https://img.shields.io/badge/pub-1.1.5-blue" alt="Safe Device" height="18"></a>
+<a href="https://pub.dev/packages/safe_device"><img src="https://img.shields.io/badge/pub-1.1.6-blue" alt="Safe Device" height="18"></a>
 <img src="https://imgur.com/Vw4Z93n.png" alt="Safe Device">
 Flutter (Null-Safety) Jailbroken, root, emulator and mock location detection.
 
@@ -10,8 +10,8 @@ In your flutter project add the dependency:
 
 ```yml
 dependencies:
-  ...
-  safe_device: ^1.1.5
+...
+  safe_device: ^1.1.6
 ```
 
 ## Usage
