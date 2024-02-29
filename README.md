@@ -39,7 +39,7 @@ bool isRealDevice = await SafeDevice.isRealDevice;
 Can this device mock location - no need to root!
 
 ```
-bool canMockLocation = await SafeDevice.canMockLocation;
+bool isMockLocation = await SafeDevice.isMockLocation;
 ```
 
 (ANDROID ONLY) Check if application is running on external storage
