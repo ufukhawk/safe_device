@@ -1,3 +1,11 @@
+## 1.1.5
+
+* Removed trust_location package.
+* Updated Flutter and Dart version.
+* Updated Gradle version.
+
+
+
 ## 1.1.4
 
 * Bug Fix
