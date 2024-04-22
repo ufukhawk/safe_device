@@ -1,3 +1,7 @@
+## 1.1.7
+
+* upload build.gradle file for Gradle 8
+
 ## 1.1.6
 
 * Update Readme

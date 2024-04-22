@@ -23,6 +23,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
+    namespace "com.xamdesign.safe_device"
     compileSdkVersion 34
 
     defaultConfig {

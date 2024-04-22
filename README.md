@@ -11,7 +11,7 @@ In your flutter project add the dependency:
 ```yml
 dependencies:
 ...
-  safe_device: ^1.1.6
+  safe_device: ^1.1.7
 ```
 
 ## Usage
