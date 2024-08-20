@@ -1,3 +1,8 @@
+## 1.1.8
+
+* Disable RootBear logs
+* Sony devices bug fix.
+
 ## 1.1.7
 
 * upload build.gradle file for Gradle 8
