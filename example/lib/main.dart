@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:safe_device/safe_device.dart';
 
 void main() => runApp(MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isJailBroken = false;
   bool isMockLocation = false;
-  bool isRealDevice = true;
+  bool isRealDevice = false;
   bool isOnExternalStorage = false;
   bool isSafeDevice = false;
   bool isDevelopmentModeEnable = false;
@@ -24,13 +24,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPlatformState() async {
-    await Permission.location.request();
-    if (await Permission.location.isPermanentlyDenied) {
-      openAppSettings();
-    }
-
-    if (!mounted) return;
     try {
+      LocationPermission permission;
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          return Future.error('Location permissions are denied');
+        }
+      }
       isJailBroken = await SafeDevice.isJailBroken;
       isMockLocation = await SafeDevice.isMockLocation;
       isRealDevice = await SafeDevice.isRealDevice;
@@ -43,12 +45,26 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  Widget buildInfoRow(String label, bool value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text('$label:'),
+        SizedBox(width: 8),
+        Text(
+          value ? "Yes" : "No",
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Device Safe check'),
+          title: const Text('Device Safe Check'),
         ),
         body: Center(
           child: Card(
@@ -58,99 +74,18 @@ class _MyAppState extends State<MyApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('isJailBroken():'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        '${isJailBroken ? "Yes" : "No"}',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('isMockLocation():'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        '${isMockLocation ? "Yes" : "No"}',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('isRealDevice():'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        '${isRealDevice ? "Yes" : "No"}',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('isOnExternalStorage():'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        '${isOnExternalStorage ? "Yes" : "No"}',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('isSafeDevice():'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        '${isSafeDevice ? "Yes" : "False"}',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('isDevelopmentModeEnable():'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        '${isDevelopmentModeEnable ? "Yes" : "False"}',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
+                  buildInfoRow('isJailBroken()', isJailBroken),
+                  SizedBox(height: 8),
+                  buildInfoRow('isMockLocation()', isMockLocation),
+                  SizedBox(height: 8),
+                  buildInfoRow('isRealDevice()', isRealDevice),
+                  SizedBox(height: 8),
+                  buildInfoRow('isOnExternalStorage()', isOnExternalStorage),
+                  SizedBox(height: 8),
+                  buildInfoRow('isSafeDevice()', isSafeDevice),
+                  SizedBox(height: 8),
+                  buildInfoRow(
+                      'isDevelopmentModeEnable()', isDevelopmentModeEnable),
                 ],
               ),
             ),

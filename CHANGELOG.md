@@ -1,3 +1,12 @@
+## 1.1.9
+
+* Removed the Permission Handler package.
+* Updated the example code.
+* Upgraded the iOS platform version.
+* Updated the Dart version.
+* Added location permission request for iOS.
+* Integrated Geolocator package for handling location permissions.
+
 ## 1.1.8
 
 * Disable RootBear logs
