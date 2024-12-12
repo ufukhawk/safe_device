@@ -76,7 +76,7 @@ bool isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
 
 ## ❗Since emulators are usually rooted, you might want to bypass these checks during development. Unless you're keen on constant false alarms ⏰
 
-<a href="https://codecanyon.net/item/flutter-puff-image-to-pdf/50878345"><img src="https://codecanyon.img.customer.envatousercontent.com/files/488429966/puffimagetopdf.png?auto=compress%2Cformat&q=80&fit=crop&crop=top&max-h=8000&max-w=590&s=08560417a799c30ac6acda7312f25dfb" alt="Flutter Puff Image to PDF" border="0" />
+<a href="https://codecanyon.net/item/flutter-puff-image-to-pdf/50878345"><img src="[https://codecanyon.img.customer.envatousercontent.com/files/488429966/puffimagetopdf.png?auto=compress%2Cformat&q=80&fit=crop&crop=top&max-h=8000&max-w=590&s=08560417a799c30ac6acda7312f25dfb](https://market-resized.envatousercontent.com/codecanyon.net/files/488429966/puffimagetopdf.png?auto=format&q=94&cf_fit=crop&gravity=top&h=8000&w=590&s=da4085a658c9566524df2de171d65f19fcf1d3457226bce78b8b0f7cd7f5602f)" alt="Flutter Puff Image to PDF" border="0" />
 </a>
 
 <a href="https://codecanyon.net/item/flutter-xam-shoe-pro-ecommerce-apple-watch/46897280"><img src="https://codecanyon.img.customer.envatousercontent.com/files/458084248/xamshoespro_main.png?auto=compress%2Cformat&q=80&fit=crop&crop=top&max-h=8000&max-w=590&s=57d3c96fde1fb475fd6708083e41f3d1c" alt="Flutter Xam Shoe Pro eCommerce + Apple Watch" border="0" /></a>
