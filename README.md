@@ -11,7 +11,7 @@ In your flutter project add the dependency:
 ```yml
 dependencies:
 ...
-  safe_device: ^1.1.9
+  safe_device: ^1.2.0
 ```
 
 ## Usage
@@ -76,23 +76,50 @@ bool isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
 
 ## ❗Since emulators are usually rooted, you might want to bypass these checks during development. Unless you're keen on constant false alarms ⏰
 
-<a href="https://codecanyon.net/item/flutter-puff-image-to-pdf/50878345"><img src="https://market-resized.envatousercontent.com/codecanyon.net/files/488429966/puffimagetopdf.png?auto=format&q=94&cf_fit=crop&gravity=top&h=8000&w=590&s=da4085a658c9566524df2de171d65f19fcf1d3457226bce78b8b0f7cd7f5602f" alt="Flutter Puff Image to PDF" border="0" />
-</a>
+<p>
+    <a href="https://codecanyon.net/item/flutter-puff-image-to-pdf/50878345">
+        <img
+            src="https://market-resized.envatousercontent.com/codecanyon.net/files/488429966/puffimagetopdf.png?auto=format&amp;q=94&amp;cf_fit=crop&amp;gravity=top&amp;h=8000&amp;w=590&amp;s=472d0ca2296e36cb0cfd0ac5d1013fbef09c33c1d0e8edc2917d06166bee7deb"
+            alt="Flutter Puff Image to PDF"
+            border="0"
+        />
+    </a>
+    <a href="https://codecanyon.net/item/flutter-xam-shoe-pro-ecommerce-apple-watch/46897280">
+        <img
+            src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757433/xamshoespro.png?auto=format&amp;q=94&amp;cf_fit=crop&amp;gravity=top&amp;h=8000&amp;w=590&amp;s=6083fab314fe2c660c1331d7e28d17df6c552d65b4fde325d33d4497f943d238"
+            alt="Flutter Xam Shoe Pro eCommerce + Apple Watch"
+            border="0"
+        />
+    </a>
+    <a href="https://codecanyon.net/item/flutter-xam-shoe-commerce-app-flutter/46724667">
+        <img
+            src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757459/xamshoes.png?auto=format&amp;q=94&amp;cf_fit=crop&amp;gravity=top&amp;h=8000&amp;w=590&amp;s=647f044cd3e37bc9b1475f3fbb105bc6feab7173dc913ebb08020127fd5589b6"
+            alt="Flutter Xam Shoe Commerce App - Flutter"
+            border="0"
+        />
+    </a>
+    <a href="https://codecanyon.net/item/flutter-fruit-market-app-in-flutter-mobilewebtablet/33060290">
+        <img
+            src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757499/nova.png?auto=format&amp;q=94&amp;cf_fit=crop&amp;gravity=top&amp;h=8000&amp;w=590&amp;s=c4232417f3bd678fafa5cb936030a35c3dfdc3d697e748c9c4466add67718879"
+            border="0"
+        />
+    </a>
+    <a href="https://codecanyon.net/item/flutter-govo-travel-app-in-flutter/29883635">
+        <img
+            src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757536/govo.png?auto=format&amp;q=94&amp;cf_fit=crop&amp;gravity=top&amp;h=8000&amp;w=590&amp;s=62df117e21adfd060100ba9d77b201c8db63812c8686bb0a66b7204b47579b31"
+            alt="Govo Travel Application - Flutter (Android &amp; iOS)"
+            border="0"
+        />
+    </a>
+    <a href="https://codecanyon.net/item/flutter-dellyshop-ecommerce-app/28804937">
+        <img
+            src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757550/delly.png?auto=format&amp;q=94&amp;cf_fit=crop&amp;gravity=top&amp;h=8000&amp;w=590&amp;s=52e241eecfd1198ea9b666274d21b576434f8df30cfc2170eaf684d6e83dd15d"
+            alt="DellyShop eCommerce Application - Flutter (Android &amp; iOS)"
+            border="0"
+        />
+    </a>
 
-<a href="https://codecanyon.net/item/flutter-xam-shoe-pro-ecommerce-apple-watch/46897280"><img src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757433/xamshoespro.png?auto=format&q=94&cf_fit=crop&gravity=top&h=8000&w=590&s=3df71ce9635eee6a94ac96a83a57d97795e85d93ba42d910c01267993cd43048" alt="Flutter Xam Shoe Pro eCommerce + Apple Watch" border="0" /></a>
+</p>
 
-<a href="https://codecanyon.net/item/flutter-xam-shoe-commerce-app-flutter/46724667"><img src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757459/xamshoes.png?auto=format&q=94&cf_fit=crop&gravity=top&h=8000&w=590&s=99c0e1f800b3683e88bf420c747ef0ee25af1e27d15894cc83b6098d00025daa" alt="Flutter Xam Shoe Commerce App - Flutter" border="0" />
-
-<a href="https://codecanyon.net/item/flutter-fruit-market-app-in-flutter-mobilewebtablet/33060290"><img src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757499/nova.png?auto=format&q=94&cf_fit=crop&gravity=top&h=8000&w=590&s=6481b0a45fd7200dd3c5e74161d26362ea268ea8f694e060ba2cb5e3e95b8fba" alt="Flutter Login Ui Kit in Flutter 2.0 (Desktop,Web, iOS, Android)" border="0" /></a>
-
-<a href="https://codecanyon.net/item/flutter-login-ui-kit-in-flutter-20-ios-android-desktop-web/31406951"><img border="0" alt="Flutter Login Ui Kit in Flutter 2.0 (Desktop,Web, iOS, Android)" src="https://market-resized.envatousercontent.com/codecanyon.net/files/331910835/Flutter_login_ui_kit.png?auto=format&q=94&cf_fit=crop&gravity=top&h=8000&w=590&s=4a35293b78a28766e8453025c40cd67ddd0204407e315034258e9b1d29e5e73d"></a>
-
-<a href="https://codecanyon.net/item/flutter-govo-travel-app-in-flutter/29883635"><img border="0" alt="Govo Travel Application - Flutter (Android & iOS)" src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757536/govo.png?auto=format&q=94&cf_fit=crop&gravity=top&h=8000&w=590&s=2bfa9d1be94fb4cd42199131c8bc5d5cffb51dee97c18ebf5641f04a7413dcad"></a>
-
-<a href="https://codecanyon.net/item/flutter-dellyshop-ecommerce-app/28804937"><img border="0" alt="DellyShop eCommerce Application - Flutter (Android & iOS)" src="https://market-resized.envatousercontent.com/codecanyon.net/files/479757550/delly.png?auto=format&q=94&cf_fit=crop&gravity=top&h=8000&w=590&s=66e1394c870530ebace5f734c58e479693c2c5b3fb8980a856a797c49a7c3f89"></a>
-
-<a href="https://codecanyon.net/item/flutter-dellyshop-ecommerce-app/28804937"><img border="0" alt="Xamarin XamUI Login Pages UI Kit 2 | Xamarin Forms" src="https://codecanyon.img.customer.envatousercontent.com/files/312189232/wnvatopromo.png?auto=compress%2Cformat&q=80&fit=crop&crop=top&max-h=8000&max-w=590&s=a9d3331d604324ff0de0b6fa8b5ebcb1.png"></a>
-
-<a href="https://codecanyon.net/item/flutter-dellyshop-ecommerce-app/28804937"><img border="0" alt="Xamarin XamUI Login Pages UI Kit 2 | Xamarin Forms" src="https://codecanyon.img.customer.envatousercontent.com/files/312189232/wnvatopromo.png?auto=compress%2Cformat&q=80&fit=crop&crop=top&max-h=8000&max-w=590&s=a9d3331d604324ff0de0b6fa8b5ebcb1.png"></a>
 
 

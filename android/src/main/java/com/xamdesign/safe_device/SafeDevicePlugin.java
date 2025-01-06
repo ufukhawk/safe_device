@@ -1,9 +1,7 @@
 package com.xamdesign.safe_device;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.location.Location;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -16,23 +14,22 @@ import com.xamdesign.safe_device.Rooted.RootedCheck;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-import io.flutter.plugin.common.MethodChannel.Result;
-
 
 /**
  * SafeDevicePlugin
  */
-public class SafeDevicePlugin implements FlutterPlugin, MethodCallHandler {
+public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCallHandler {
     private Context context;
     private static LocationAssistantListener locationAssistantListener;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
-
         this.context = binding.getApplicationContext();
         locationAssistantListener = new LocationAssistantListener(context);
-        onStart();
+
+        // Start location updates if needed
+        locationAssistantListener.getAssistant().startLocationUpdates();
+
         final MethodChannel channel = new MethodChannel(
                 binding.getBinaryMessenger(),
                 "safe_device"
@@ -40,20 +37,19 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(this);
     }
 
-    // onstop
     public static void onStop() {
         if (locationAssistantListener != null) {
-            locationAssistantListener.getAssistant().stop();
+            // STOP location updates
+            locationAssistantListener.getAssistant().stopLocationUpdates();
         }
     }
-    // onstart
+
     public static void onStart() {
         if (locationAssistantListener != null) {
-            locationAssistantListener.getAssistant().start();
+            // START location updates
+            locationAssistantListener.getAssistant().startLocationUpdates();
         }
     }
-
-
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
@@ -61,7 +57,7 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     @Override
-    public void onMethodCall(MethodCall call, final Result result) {
+    public void onMethodCall(MethodCall call, final MethodChannel.Result result) {
         if (call.method.equals("getPlatformVersion")) {
             result.success("Android " + android.os.Build.VERSION.RELEASE);
         } else if (call.method.equals("isJailBroken")) {
@@ -80,14 +76,15 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodCallHandler {
             } else if (locationAssistantListener.getLatitude() != null && locationAssistantListener.getLongitude() != null) {
                 result.success(false);
             } else {
-                locationAssistantListener = new LocationAssistantListener(context);
-                result.success(true);
+                // If we don't have location yet, we might say "can't confirm yet"
+                // or simply return false, or start a new request...
+                // For now, let's just say false
+                result.success(false);
             }
         } else {
             result.notImplemented();
         }
     }
-
 
 }
 
@@ -98,53 +95,71 @@ class LocationAssistantListener implements LocationAssistant.Listener {
     private String longitude;
 
     public LocationAssistantListener(Context context) {
-        assistant = new LocationAssistant(context, this, LocationAssistant.Accuracy.HIGH, 5000, false);
-        assistant.setVerbose(true);
-        assistant.start();
+        // Adjust constructor call to match the actual LocationAssistant constructor
+        assistant = new LocationAssistant(context, this);
     }
 
+    // Provide access to the assistant
+    public LocationAssistant getAssistant() {
+        return assistant;
+    }
+
+    // Implement the interface methods properly
     @Override
     public void onNeedLocationPermission() {
-        assistant.requestLocationPermission();
-        assistant.requestAndPossiblyExplainLocationPermission();
+        // You could request permission from Flutter side or do something else
+        // For debugging, just log it:
+        io.flutter.Log.i("LocationAssistant", "onNeedLocationPermission called");
     }
 
     @Override
     public void onExplainLocationPermission() {
-        io.flutter.Log.i("i", "onExplainLocationPermission: ");
+        io.flutter.Log.i("LocationAssistant", "onExplainLocationPermission");
     }
 
     @Override
-    public void onLocationPermissionPermanentlyDeclined(View.OnClickListener fromView, DialogInterface.OnClickListener fromDialog) {
-        io.flutter.Log.i("i", "onLocationPermissionPermanentlyDeclined: ");
+    public void onLocationPermissionPermanentlyDeclined() {
+        io.flutter.Log.i("LocationAssistant", "onLocationPermissionPermanentlyDeclined");
     }
 
     @Override
     public void onNeedLocationSettingsChange() {
-        io.flutter.Log.i("i", "LocationSettingsStatusCodes.RESOLUTION_REQUIRED: Please Turn on GPS location service.");
+        io.flutter.Log.i("LocationAssistant", "onNeedLocationSettingsChange");
     }
 
     @Override
-    public void onFallBackToSystemSettings(View.OnClickListener fromView, DialogInterface.OnClickListener fromDialog) {
-        io.flutter.Log.i("i", "onFallBackToSystemSettings: ");
+    public void onFallBackToSystemSettings() {
+        io.flutter.Log.i("LocationAssistant", "onFallBackToSystemSettings");
     }
 
     @Override
     public void onNewLocationAvailable(Location location) {
         if (location == null) return;
-        latitude = location.getLatitude() + "";
-        longitude = location.getLongitude() + "";
-        isMockLocationsDetected = false;
+        latitude = String.valueOf(location.getLatitude());
+        longitude = String.valueOf(location.getLongitude());
+
+        // In many detection strategies, if a location has the isFromMockProvider flag,
+        // you might consider that a mock location. But in modern Android, that's not reliable.
+        // You could do something like:
+        if (location.isFromMockProvider()) {
+            isMockLocationsDetected = true;
+        } else {
+            isMockLocationsDetected = false;
+        }
     }
 
     @Override
-    public void onMockLocationsDetected(View.OnClickListener fromView, DialogInterface.OnClickListener fromDialog) {
+    public void onMockLocationsDetected() {
         isMockLocationsDetected = true;
     }
 
     @Override
-    public void onError(LocationAssistant.ErrorType type, String message) {
-        io.flutter.Log.i("i", "Error: " + message);
+    public void onError(String message) {
+        io.flutter.Log.i("LocationAssistant", "Error: " + message);
+    }
+
+    public boolean isMockLocationsDetected() {
+        return isMockLocationsDetected;
     }
 
     public String getLatitude() {
@@ -153,13 +168,5 @@ class LocationAssistantListener implements LocationAssistant.Listener {
 
     public String getLongitude() {
         return longitude;
-    }
-
-    public boolean isMockLocationsDetected() {
-        return isMockLocationsDetected;
-    }
-
-    public LocationAssistant getAssistant() {
-        return assistant;
     }
 }

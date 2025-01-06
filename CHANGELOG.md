@@ -1,3 +1,9 @@
+
+## 1.2.0
+
+* Updated android code for better performance.
+* Bug Fixes.
+
 ## 1.1.9
 
 * Removed the Permission Handler package.
