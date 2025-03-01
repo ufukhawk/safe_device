@@ -7,7 +7,7 @@
 
     <application>
         <activity
-            android:name=".MockLocation.MainActivityvvvv"
+            android:name=".MockLocation.MainActivity"
             android:exported="false" />
     </application>
 
