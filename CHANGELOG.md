@@ -1,4 +1,10 @@
 
+
+## 1.2.1
+
+* Upgraded rootbeer-lib dependency from version 0.1.0 to 0.1.1.
+* Corrected the activity name in AndroidManifest.xml from 'MainActivityvvvv' to 'MainActivity'.
+
 ## 1.2.0
 
 * Updated android code for better performance.
