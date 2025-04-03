@@ -11,7 +11,9 @@
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"getPlatformVersion" isEqualToString:call.method]) {
+  if ([@"init" isEqualToString:call.method]) {
+    result(nil);
+  } else if ([@"getPlatformVersion" isEqualToString:call.method]) {
     result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
   }else if ([@"isJailBroken" isEqualToString:call.method]) {
     result([NSNumber numberWithBool:[self isJailBroken]]);

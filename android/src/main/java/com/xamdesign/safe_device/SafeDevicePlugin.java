@@ -25,10 +25,6 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
         this.context = binding.getApplicationContext();
-        locationAssistantListener = new LocationAssistantListener(context);
-
-        // Start location updates if needed
-        locationAssistantListener.getAssistant().startLocationUpdates();
 
         final MethodChannel channel = new MethodChannel(
                 binding.getBinaryMessenger(),
@@ -58,7 +54,14 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
 
     @Override
     public void onMethodCall(MethodCall call, final MethodChannel.Result result) {
-        if (call.method.equals("getPlatformVersion")) {
+        if (call.method.equals("init")) {
+            SafeDeviceConfig config = getConfig(call);
+            if (config.isLocationUpdateEnabled()) {
+                locationAssistantListener = new LocationAssistantListener(context);
+                locationAssistantListener.getAssistant().startLocationUpdates();
+            }
+            result.success(null);
+        } else if (call.method.equals("getPlatformVersion")) {
             result.success("Android " + android.os.Build.VERSION.RELEASE);
         } else if (call.method.equals("isJailBroken")) {
             result.success(RootedCheck.isJailBroken(context));
@@ -71,7 +74,9 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
         } else if (call.method.equals("usbDebuggingCheck")) {
             result.success(DevelopmentModeCheck.usbDebuggingCheck(context));
         } else if (call.method.equals("isMockLocation")) {
-            if (locationAssistantListener.isMockLocationsDetected()) {
+            if (locationAssistantListener == null) {
+                result.success(false);
+            } else if (locationAssistantListener.isMockLocationsDetected()) {
                 result.success(true);
             } else if (locationAssistantListener.getLatitude() != null && locationAssistantListener.getLongitude() != null) {
                 result.success(false);
@@ -84,6 +89,10 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
         } else {
             result.notImplemented();
         }
+    }
+    
+    private SafeDeviceConfig getConfig(MethodCall call) {
+        return new SafeDeviceConfig(call.argument("locationUpdateEnabled"));
     }
 
 }

@@ -2,9 +2,18 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:safe_device/safe_device_config.dart';
 
 class SafeDevice {
   static const MethodChannel _channel = const MethodChannel('safe_device');
+
+  static Future<void> init(SafeDeviceConfig config) async {
+    try {
+      await _channel.invokeMethod('init', config.toMap());
+    } catch (e) {
+      print('Error initializing SafeDevice: $e');
+    }
+  }
 
   // Checks whether device is JailBroken (iOS) or Rooted (Android)
   static Future<bool> get isJailBroken async {

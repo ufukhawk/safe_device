@@ -1,4 +1,5 @@
-
+## 1.2.2
+* Added SafeDeviceConfig locationUpdateEnabled
 
 ## 1.2.1
 
