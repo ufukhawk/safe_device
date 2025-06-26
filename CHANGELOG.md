@@ -1,3 +1,12 @@
+## 1.3.1
+
+* **iOS Build Fix**: Resolved Swift bridging header compilation issues that caused build failures.
+* **Swift Integration Improvement**: Replaced compile-time Swift header imports with runtime class resolution for better compatibility.
+* **Podspec Optimization**: Simplified iOS podspec configuration to prevent bridging header path conflicts.
+* **Enhanced Swift-Objective-C Interoperability**: Added `@objcMembers` annotation for automatic method exposure.
+* **Bug Fix**: Fixed "Build input file cannot be found: safe_device-Bridging-Header.h" error.
+* **Bug Fix**: Resolved "Undefined symbol: _OBJC_CLASS_$_SafeDeviceJailbreakDetection" linker error.
+
 ## 1.3.0
 
 * **Enhanced Android Emulator Detection**: Improved detection for popular Android emulators including LDPlayer, MEmu, BlueStacks.

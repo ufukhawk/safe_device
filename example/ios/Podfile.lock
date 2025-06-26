@@ -29,7 +29,7 @@ SPEC CHECKSUMS:
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   geolocator_apple: 1560c3c875af2a412242c7a923e15d0d401966ff
-  safe_device: 6851a01402b2b881b6695ca8421f5815bdbcc872
+  safe_device: 9a252fe5e39eb857bd347926b77b69a54d19770d
 
 PODFILE CHECKSUM: dadeea5871b04514ece378738eafa174eb5a481a
 

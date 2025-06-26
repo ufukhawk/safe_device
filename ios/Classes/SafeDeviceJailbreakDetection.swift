@@ -1,7 +1,9 @@
 import Foundation
 import UIKit
 
-@objc public class SafeDeviceJailbreakDetection: NSObject {
+@objc(SafeDeviceJailbreakDetection)
+@objcMembers
+public class SafeDeviceJailbreakDetection: NSObject {
     
     // MARK: - Jailbreak Detection Paths
     
