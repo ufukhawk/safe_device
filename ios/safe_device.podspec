@@ -17,5 +17,10 @@ Jailbroken, root, emulator and mock location detection
   s.dependency 'Flutter'
   s.dependency 'DTTJailbreakDetection'
   s.platform = :ios, '8.0'
+  s.swift_version = '5.0'
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386'
+  }
 
 end

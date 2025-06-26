@@ -17,6 +17,32 @@ class SafeDevice {
     }
   }
 
+  // (iOS ONLY) Checks whether device is JailBroken using custom detection
+  static Future<bool> get isJailBrokenCustom async {
+    if (Platform.isAndroid) return false;
+    try {
+      final bool isJailBrokenCustom =
+          await _channel.invokeMethod('isJailBrokenCustom');
+      return isJailBrokenCustom;
+    } catch (e) {
+      print('Error checking JailBroken status with custom detection: $e');
+      return false;
+    }
+  }
+
+  // (iOS ONLY) Get detailed breakdown of jailbreak detection methods
+  static Future<Map<String, bool>> get jailbreakDetails async {
+    if (Platform.isAndroid) return {};
+    try {
+      final Map<String, dynamic> details =
+          await _channel.invokeMethod('getJailbreakDetails');
+      return Map<String, bool>.from(details);
+    } catch (e) {
+      print('Error getting jailbreak details: $e');
+      return {};
+    }
+  }
+
   // Can this device mock location - no need to root!
   static Future<bool> get isMockLocation async {
     try {

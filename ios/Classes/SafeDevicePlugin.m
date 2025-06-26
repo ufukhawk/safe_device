@@ -1,5 +1,6 @@
 #import "SafeDevicePlugin.h"
 #import <DTTJailbreakDetection/DTTJailbreakDetection.h>
+#import "safe_device-Swift.h"
 
 @implementation SafeDevicePlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
@@ -15,6 +16,10 @@
     result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
   }else if ([@"isJailBroken" isEqualToString:call.method]) {
     result([NSNumber numberWithBool:[self isJailBroken]]);
+  }else if ([@"isJailBrokenCustom" isEqualToString:call.method]) {
+    result([NSNumber numberWithBool:[self isJailBrokenCustom]]);
+  }else if ([@"getJailbreakDetails" isEqualToString:call.method]) {
+    result([self getJailbreakDetails]);
   }else if ([@"canMockLocation" isEqualToString:call.method]) {
     //For now we have returned if device is Jail Broken or if it's not real device. There is no
     //strong detection of Mock location in iOS
@@ -27,8 +32,18 @@
 }
 
 - (BOOL)isJailBroken{
-//    return [self checkPaths] || [self checkSchemes] || [self canViolateSandbox];
-    return [DTTJailbreakDetection isJailbroken];
+    // Use both detection methods for enhanced reliability
+    return [DTTJailbreakDetection isJailbroken] || [SafeDeviceJailbreakDetection isJailbroken];
+}
+
+- (BOOL)isJailBrokenCustom{
+    // Use only our custom Swift implementation
+    return [SafeDeviceJailbreakDetection isJailbroken];
+}
+
+- (NSDictionary*)getJailbreakDetails{
+    // Get detailed breakdown of jailbreak detection methods
+    return [SafeDeviceJailbreakDetection getJailbreakDetails];
 }
 
 - (BOOL) isRealDevice{

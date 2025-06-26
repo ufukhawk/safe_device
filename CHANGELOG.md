@@ -1,4 +1,30 @@
+## 1.3.0
 
+* **Enhanced Android Emulator Detection**: Improved detection for popular Android emulators including LDPlayer, MEmu, BlueStacks.
+* **LDPlayer Detection**: Added specific detection for LDPlayer emulator with brand, model, and file-based checks.
+* **Enhanced Root Detection**: Improved root detection for emulators with additional checks for:
+  - Test-keys in build tags
+  - Emulator-specific root files
+  - Enhanced su binary detection
+  - Dangerous system properties (ro.debuggable, ro.secure, service.adb.root)
+* **Architecture Detection**: Added enhanced x86/i686 architecture detection for emulator identification.
+* **Bug Fix**: Resolved issue where rooted LDPlayer was not properly detected as both emulator and rooted device.
+* **Enhanced iOS Jailbreak Detection**: Implemented comprehensive custom jailbreak detection for iOS.
+* **New Swift Implementation**: Added `SafeDeviceJailbreakDetection` class with advanced detection methods.
+* **Expanded Path Checking**: Added detection for 20+ additional jailbreak-related paths including:
+  - Cydia and package managers (`/Applications/Cydia.app`, `/private/var/lib/apt`, etc.)
+  - System binaries (`/bin/bash`, `/usr/sbin/sshd`, `/usr/libexec/ssh-keysign`, etc.)
+  - MobileSubstrate files (`/Library/MobileSubstrate/MobileSubstrate.dylib`)
+  - Launch daemons (`/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist`)
+* **Multiple Detection Methods**: Added URL scheme detection, sandbox violation testing, environment variable checking, and symbolic link detection.
+* **New API Methods**:
+  - `isJailBrokenCustom`: iOS-only method using custom detection algorithm
+  - `jailbreakDetails`: Returns detailed breakdown of detection methods
+* **Improved Reliability**: Enhanced main `isJailBroken` method now combines DTTJailbreakDetection with custom detection.
+* **Swift 5.0 Support**: Updated podspec to support modern Swift development.
+* **Updated Example App**: Enhanced example to demonstrate new jailbreak detection features.
+* **Bug Fix**: Resolved Swift pod integration issue by adding modular headers support for DTTJailbreakDetection dependency.
+* **Bug Fix**: Fixed iOS Simulator false positive detection - custom jailbreak detection now correctly returns false on simulator environment.
 
 ## 1.2.1
 

@@ -1,6 +1,6 @@
 # safe_device (Null-Safety)
 
-<a href="https://pub.dev/packages/safe_device"><img src="https://img.shields.io/badge/pub-1.2.1-blue" alt="Safe Device" height="18"></a>
+<a href="https://pub.dev/packages/safe_device"><img src="https://img.shields.io/badge/pub-1.3.0-blue" alt="Safe Device" height="18"></a>
 <img src="https://imgur.com/Vw4Z93n.png" alt="Safe Device">
 Flutter (Null-Safety) Jailbroken, root, emulator and mock location detection.
 
@@ -11,7 +11,7 @@ In your flutter project add the dependency:
 ```yml
 dependencies:
 ...
-  safe_device: ^1.2.1
+  safe_device: ^1.3.0
 ```
 
 ## Usage
@@ -28,6 +28,18 @@ Checks whether device JailBroken on iOS/Android?
 
 ```
 bool isJailBroken = await SafeDevice.isJailBroken;
+```
+
+(iOS ONLY) Enhanced jailbreak detection with custom path checking
+
+```
+bool isJailBrokenCustom = await SafeDevice.isJailBrokenCustom;
+```
+
+(iOS ONLY) Get detailed breakdown of jailbreak detection methods
+
+```
+Map<String, bool> details = await SafeDevice.jailbreakDetails;
 ```
 
 Checks whether device is real or emulator
@@ -58,6 +70,47 @@ bool isSafeDevice = await SafeDevice.isSafeDevice;
 
 ```
 bool isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
+```
+
+## Enhanced iOS Jailbreak Detection
+
+The plugin now includes enhanced jailbreak detection for iOS with comprehensive path checking. The custom detection method checks for:
+
+### Jailbreak Tool Paths
+- Cydia and package managers (`/Applications/Cydia.app`, `/private/var/lib/apt`, etc.)
+- System binaries commonly found on jailbroken devices (`/bin/bash`, `/usr/sbin/sshd`, etc.)
+- MobileSubstrate files (`/Library/MobileSubstrate/MobileSubstrate.dylib`)
+- APT package manager files (`/etc/apt`, `/var/lib/dpkg/status`)
+- Launch daemons (`/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist`)
+
+### Detection Methods
+- **Path Existence**: Checks for files and directories commonly present on jailbroken devices
+- **URL Scheme Detection**: Tests if jailbreak-related URL schemes can be opened
+- **Sandbox Violation**: Attempts to write outside the app sandbox
+- **Environment Variables**: Checks for jailbreak-related environment variables
+- **Symbolic Link Detection**: Looks for suspicious symbolic links
+- **Process Detection**: Checks for running jailbreak-related processes
+
+### Usage Example
+
+```dart
+// Basic jailbreak detection (uses both DTTJailbreakDetection and custom detection)
+bool isJailbroken = await SafeDevice.isJailBroken;
+
+// Custom detection only (comprehensive path checking)
+bool isJailbrokenCustom = await SafeDevice.isJailBrokenCustom;
+
+// Detailed breakdown of detection methods
+Map<String, bool> details = await SafeDevice.jailbreakDetails;
+// Returns:
+// {
+//   "hasPaths": false,
+//   "canOpenSchemes": false,
+//   "canViolateSandbox": false,
+//   "hasEnvironmentVariables": false,
+//   "hasSuspiciousSymlinks": false,
+//   "hasJailbreakProcesses": false
+// }
 ```
 
 # Note:
