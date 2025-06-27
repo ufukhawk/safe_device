@@ -17,16 +17,11 @@ Jailbroken, root, emulator and mock location detection
   s.dependency 'Flutter'
   s.dependency 'DTTJailbreakDetection'
   s.platform = :ios, '9.0'
-  s.swift_version = '5.0'
-  
-  # Specify that this pod contains Swift code
   s.requires_arc = true
   
-  # Enable module definition for Swift interoperability
+  # Simple pod configuration for Objective-C only
   s.pod_target_xcconfig = {
-    'DEFINES_MODULE' => 'YES',
-    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386',
-    'SWIFT_VERSION' => '5.0'
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386'
   }
 
 end

@@ -1,5 +1,6 @@
 #import "SafeDevicePlugin.h"
 #import <DTTJailbreakDetection/DTTJailbreakDetection.h>
+#import "SafeDeviceJailbreakDetection.h"
 
 @implementation SafeDevicePlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
@@ -38,22 +39,16 @@
 }
 
 - (BOOL)isJailBrokenCustom{
-    // Use runtime class resolution for Swift class
-    Class swiftClass = NSClassFromString(@"SafeDeviceJailbreakDetection");
-    if (swiftClass && [swiftClass respondsToSelector:@selector(isJailbroken)]) {
-        return [swiftClass performSelector:@selector(isJailbroken)];
-    }
-    return NO;
+    // Direct Objective-C call - no bridging needed
+    return [SafeDeviceJailbreakDetection isJailbroken];
 }
 
 - (NSDictionary*)getJailbreakDetails{
-    // Get detailed breakdown of jailbreak detection methods
-    Class swiftClass = NSClassFromString(@"SafeDeviceJailbreakDetection");
-    if (swiftClass && [swiftClass respondsToSelector:@selector(getJailbreakDetails)]) {
-        return [swiftClass performSelector:@selector(getJailbreakDetails)];
-    }
-    return @{};
+    // Direct Objective-C call - no type conversion needed
+    return [SafeDeviceJailbreakDetection getJailbreakDetails];
 }
+
+
 
 - (BOOL) isRealDevice{
     return !TARGET_OS_SIMULATOR;

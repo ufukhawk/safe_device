@@ -1,3 +1,14 @@
+## 1.3.2
+
+* **Major Architecture Change**: Converted iOS jailbreak detection from Swift to Objective-C for complete build stability.
+* **Eliminated All Bridging Issues**: Removed all Swift-Objective-C bridging dependencies that caused compilation errors.
+* **Simplified iOS Build**: No more Swift compiler requirements, bridging headers, or module configurations needed.
+* **Complete Type Safety**: Direct Objective-C implementation eliminates type conversion issues between Swift and Dart.
+* **Enhanced Compatibility**: Works across all iOS project configurations without custom build settings.
+* **Performance Improvement**: Direct Objective-C calls eliminate runtime class resolution overhead.
+* **Same Functionality**: All 20+ jailbreak detection methods preserved with identical behavior.
+* **Bug Fix**: Permanently resolved all Swift-related build errors including bridging header and linker issues.
+
 ## 1.3.1
 
 * **iOS Build Fix**: Resolved Swift bridging header compilation issues that caused build failures.
