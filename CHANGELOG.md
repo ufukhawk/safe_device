@@ -1,3 +1,16 @@
+## 1.3.3
+
+* **CRITICAL iOS SECURITY FIX**: Resolved false positive jailbreak detection in development environment that affected real devices.
+* **Development Environment Detection**: Added intelligent detection to distinguish between legitimate development variables and actual jailbreak indicators.
+* **DYLD_INSERT_LIBRARIES Fix**: Fixed false positive caused by Apple's legitimate development environment variables (DYLD_INSERT_LIBRARIES).
+* **Real Device Accuracy**: iPhone 16 Pro Max, iPhone SE, and other real devices now correctly return `false` for jailbreak detection during development.
+* **Platform Consistency**: Resolved discrepancy where macOS development showed `true` while Windows development showed `false`.
+* **Type Safety Fix**: Fixed `Map<Object?, Object?>` casting error in `jailbreakDetails` method.
+* **Enhanced Debug Info**: Added comprehensive debugging information including development environment status, legitimate environment variables, and DTT library results.
+* **Smart Filtering**: Added filtering for legitimate Apple framework paths in DYLD_INSERT_LIBRARIES.
+* **Production Safety**: Maintains full jailbreak detection accuracy in production while being lenient in development.
+* **API Change**: `jailbreakDetails` now returns `Map<String, dynamic>` instead of `Map<String, bool>` for better debugging info.
+
 ## 1.3.2
 
 * **Major Architecture Change**: Converted iOS jailbreak detection from Swift to Objective-C for complete build stability.

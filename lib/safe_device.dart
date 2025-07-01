@@ -31,12 +31,14 @@ class SafeDevice {
   }
 
   // (iOS ONLY) Get detailed breakdown of jailbreak detection methods
-  static Future<Map<String, bool>> get jailbreakDetails async {
+  static Future<Map<String, dynamic>> get jailbreakDetails async {
     if (Platform.isAndroid) return {};
     try {
-      final Map<String, dynamic> details =
-          await _channel.invokeMethod('getJailbreakDetails');
-      return Map<String, bool>.from(details);
+      final result = await _channel.invokeMethod('getJailbreakDetails');
+      if (result is Map) {
+        return Map<String, dynamic>.from(result.cast<String, dynamic>());
+      }
+      return {};
     } catch (e) {
       print('Error getting jailbreak details: $e');
       return {};

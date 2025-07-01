@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   bool isOnExternalStorage = false;
   bool isSafeDevice = false;
   bool isDevelopmentModeEnable = false;
-  Map<String, bool> jailbreakDetails = {};
+  Map<String, dynamic> jailbreakDetails = {};
 
   @override
   void initState() {
@@ -114,7 +114,8 @@ class _MyAppState extends State<MyApp> {
           ),
         ...jailbreakDetails.entries
             .where((entry) => entry.key != 'isSimulator')
-            .map((entry) => buildInfoRow('${entry.key}', entry.value))
+            .map((entry) => buildInfoRow(
+                '${entry.key}', entry.value is bool ? entry.value : false))
             .toList(),
       ],
     );

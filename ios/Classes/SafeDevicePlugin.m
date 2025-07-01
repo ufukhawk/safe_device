@@ -1,6 +1,5 @@
 #import "SafeDevicePlugin.h"
 #import <DTTJailbreakDetection/DTTJailbreakDetection.h>
-#import "SafeDeviceJailbreakDetection.h"
 
 @implementation SafeDevicePlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
@@ -31,24 +30,133 @@
   }
 }
 
-- (BOOL)isJailBroken{
-    // Use both detection methods for enhanced reliability
-    BOOL dtDetection = [DTTJailbreakDetection isJailbroken];
-    BOOL customDetection = [self isJailBrokenCustom];
-    return dtDetection || customDetection;
+- (BOOL)isDevelopmentEnvironment {
+    // Check if running under Xcode or development environment
+    
+    // Check for Xcode debugging
+    if (isatty(STDERR_FILENO)) {
+        return YES;
+    }
+    
+    // Check for debug build
+    #ifdef DEBUG
+    return YES;
+    #endif
+    
+    // Check simulator
+    #if TARGET_OS_SIMULATOR
+    return YES;
+    #endif
+    
+    // Check for development team ID in embedded.mobileprovision
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSString *provisionPath = [bundlePath stringByAppendingPathComponent:@"embedded.mobileprovision"];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:provisionPath]) {
+        // Development builds typically have embedded.mobileprovision
+        return YES;
+    }
+    
+    return NO;
 }
 
-- (BOOL)isJailBrokenCustom{
-    // Direct Objective-C call - no bridging needed
-    return [SafeDeviceJailbreakDetection isJailbroken];
+- (BOOL)hasLegitimateEnvironmentVariables {
+    // Check if DYLD_INSERT_LIBRARIES contains legitimate Apple frameworks
+    const char* dylibPath = getenv("DYLD_INSERT_LIBRARIES");
+    if (dylibPath == NULL) {
+        return NO;
+    }
+    
+    NSString *dylibString = [NSString stringWithUTF8String:dylibPath];
+    
+    // Legitimate Apple system paths
+    NSArray *legitimatePaths = @[
+        @"/System/Library/PrivateFrameworks/",
+        @"/usr/lib/system/",
+        @"/System/Library/Frameworks/",
+        @"/Developer/",
+        @"/Applications/Xcode.app/",
+        @"libBacktraceRecording.dylib",
+        @"libMainThreadChecker.dylib",
+        @"IDEBundleInjection"
+    ];
+    
+    for (NSString *legitimatePath in legitimatePaths) {
+        if ([dylibString containsString:legitimatePath]) {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
-- (NSDictionary*)getJailbreakDetails{
-    // Direct Objective-C call - no type conversion needed
-    return [SafeDeviceJailbreakDetection getJailbreakDetails];
+- (BOOL)isJailBroken {
+    // If we're in development environment, be more lenient
+    if ([self isDevelopmentEnvironment]) {
+        // Only check for obvious jailbreak signs, ignore environment variables
+        return [self hasObviousJailbreakSigns];
+    }
+    
+    // Production environment - full detection
+    BOOL dttResult = [DTTJailbreakDetection isJailbroken];
+    
+    // If DTT says jailbroken, double-check environment variables
+    if (dttResult && [self hasLegitimateEnvironmentVariables]) {
+        // Probably false positive from development environment
+        return [self hasObviousJailbreakSigns];
+    }
+    
+    return dttResult;
 }
 
+- (BOOL)hasObviousJailbreakSigns {
+    // Check for obvious jailbreak files
+    NSArray *jailbreakPaths = @[
+        @"/Applications/Cydia.app",
+        @"/Library/MobileSubstrate/MobileSubstrate.dylib",
+        @"/bin/bash",
+        @"/usr/sbin/sshd",
+        @"/etc/apt",
+        @"/private/var/lib/apt/"
+    ];
+    
+    for (NSString *path in jailbreakPaths) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+            return YES;
+        }
+    }
+    
+    // Check for URL schemes
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://"]]) {
+        return YES;
+    }
+    
+    return NO;
+}
 
+- (BOOL)isJailBrokenCustom {
+    // Custom detection with development environment awareness
+    if ([self isDevelopmentEnvironment]) {
+        return [self hasObviousJailbreakSigns];
+    }
+    
+    // Use enhanced detection in production
+    return [self hasObviousJailbreakSigns];
+}
+
+- (NSDictionary*)getJailbreakDetails {
+    BOOL isDev = [self isDevelopmentEnvironment];
+    BOOL hasLegitEnvVars = [self hasLegitimateEnvironmentVariables];
+    BOOL obviousJailbreak = [self hasObviousJailbreakSigns];
+    
+    return @{
+        @"isSimulator": @(TARGET_OS_SIMULATOR),
+        @"isDevelopmentEnvironment": @(isDev),
+        @"hasLegitimateEnvironmentVariables": @(hasLegitEnvVars),
+        @"hasObviousJailbreakSigns": @(obviousJailbreak),
+        @"dttResult": @([DTTJailbreakDetection isJailbroken]),
+        @"finalResult": @([self isJailBroken])
+    };
+}
 
 - (BOOL) isRealDevice{
     return !TARGET_OS_SIMULATOR;
