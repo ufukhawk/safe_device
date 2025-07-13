@@ -72,6 +72,12 @@ bool isSafeDevice = await SafeDevice.isSafeDevice;
 bool isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
 ```
 
+(ANDROID ONLY) Get detailed breakdown of root detection methods for debugging
+
+```
+Map<String, dynamic> rootDetails = await SafeDevice.rootDetectionDetails;
+```
+
 ## Enhanced iOS Jailbreak Detection
 
 The plugin now includes enhanced jailbreak detection for iOS with comprehensive path checking. The custom detection method checks for:

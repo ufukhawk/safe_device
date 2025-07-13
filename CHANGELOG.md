@@ -1,6 +1,5 @@
 ## 1.3.4 
 
-### Fixed
 - **CRITICAL**: Fixed false positive root detection on real Android devices (especially Xiaomi/Redmi devices)
 - Removed normal Android system files from emulator root detection that were causing false positives
 - Fixed `emulatorSpecificRoot` check to only apply to actual emulators, not real devices
