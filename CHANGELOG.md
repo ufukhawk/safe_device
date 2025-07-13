@@ -1,3 +1,21 @@
+## 1.3.4 
+
+### Fixed
+- **CRITICAL**: Fixed false positive root detection on real Android devices (especially Xiaomi/Redmi devices)
+- Removed normal Android system files from emulator root detection that were causing false positives
+- Fixed `emulatorSpecificRoot` check to only apply to actual emulators, not real devices
+- Improved Xiaomi/Redmi/POCO device support with more conservative root detection
+
+### Changed
+- Emulator-specific root checks now only run on actual emulators, not real devices
+- Xiaomi/Redmi/POCO devices now use more conservative root detection methods
+- Removed false positive triggers: `/system/bin/app_process32`, `/system/bin/debuggerd`, `/system/bin/debuggerd64`, `/system/bin/rild`, `/proc/1/maps`, `/system/recovery-from-boot.p`, `/system/etc/security/otacerts.zip`
+
+### Technical Details
+- Added `isLikelyEmulator()` method to properly identify emulators before applying emulator-specific checks
+- Xiaomi devices now require multiple strong indicators (obvious root signs + basic check + su binary) before being flagged as rooted
+- Better separation between emulator detection and real device root detection
+
 ## 1.3.3
 
 * **CRITICAL iOS SECURITY FIX**: Resolved false positive jailbreak detection in development environment that affected real devices.

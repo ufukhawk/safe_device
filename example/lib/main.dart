@@ -21,6 +21,7 @@ class _MyAppState extends State<MyApp> {
   bool isSafeDevice = false;
   bool isDevelopmentModeEnable = false;
   Map<String, dynamic> jailbreakDetails = {};
+  Map<String, dynamic> rootDetectionDetails = {};
 
   @override
   void initState() {
@@ -40,6 +41,7 @@ class _MyAppState extends State<MyApp> {
       isSafeDevice = false;
       isDevelopmentModeEnable = false;
       jailbreakDetails = {};
+      rootDetectionDetails = {};
     });
 
     isJailBroken = await SafeDevice.isJailBroken;
@@ -55,6 +57,11 @@ class _MyAppState extends State<MyApp> {
       jailbreakDetails = await SafeDevice.jailbreakDetails;
     }
 
+    // Android-specific enhanced root detection debugging
+    if (Platform.isAndroid) {
+      rootDetectionDetails = await SafeDevice.rootDetectionDetails;
+    }
+
     setState(() {
       this.isJailBroken = isJailBroken;
       this.isJailBrokenCustom = isJailBrokenCustom;
@@ -64,6 +71,7 @@ class _MyAppState extends State<MyApp> {
       this.isSafeDevice = isSafeDevice;
       this.isDevelopmentModeEnable = isDevelopmentModeEnable;
       this.jailbreakDetails = jailbreakDetails;
+      this.rootDetectionDetails = rootDetectionDetails;
     });
   }
 
@@ -121,6 +129,71 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  Widget buildRootDetectionDetailsSection() {
+    if (rootDetectionDetails.isEmpty) return Container();
+
+    return Column(
+      children: [
+        Divider(),
+        Text(
+          'Root Detection Details (Android)',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        // Device information
+        if (rootDetectionDetails.containsKey('brand'))
+          Card(
+            color: Colors.blue.shade50,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Device Info:',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Brand: ${rootDetectionDetails['brand']}'),
+                  Text('Model: ${rootDetectionDetails['model']}'),
+                  Text('API Level: ${rootDetectionDetails['apiLevel']}'),
+                  Text('Build Type: ${rootDetectionDetails['buildType']}'),
+                  Text('Build Tags: ${rootDetectionDetails['buildTags']}'),
+                ],
+              ),
+            ),
+          ),
+        SizedBox(height: 8),
+        // Detection results
+        ...rootDetectionDetails.entries
+            .where((entry) => entry.value is bool)
+            .map((entry) => buildInfoRow('${entry.key}', entry.value))
+            .toList(),
+        // System properties
+        if (rootDetectionDetails.containsKey('ro.debuggable'))
+          Card(
+            color: Colors.orange.shade50,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('System Properties:',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                      'ro.debuggable: ${rootDetectionDetails['ro.debuggable']}'),
+                  Text('ro.secure: ${rootDetectionDetails['ro.secure']}'),
+                  Text(
+                      'service.adb.root: ${rootDetectionDetails['service.adb.root']}'),
+                  Text(
+                      'ro.build.type: ${rootDetectionDetails['ro.build.type']}'),
+                  Text(
+                      'ro.build.tags: ${rootDetectionDetails['ro.build.tags']}'),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -154,6 +227,7 @@ class _MyAppState extends State<MyApp> {
                     buildInfoRow(
                         'isDevelopmentModeEnable()', isDevelopmentModeEnable),
                     if (Platform.isIOS) buildJailbreakDetailsSection(),
+                    if (Platform.isAndroid) buildRootDetectionDetailsSection(),
                   ],
                 ),
               ),

@@ -19,30 +19,21 @@ class SafeDevice {
 
   // (iOS ONLY) Checks whether device is JailBroken using custom detection
   static Future<bool> get isJailBrokenCustom async {
-    if (Platform.isAndroid) return false;
-    try {
-      final bool isJailBrokenCustom =
-          await _channel.invokeMethod('isJailBrokenCustom');
-      return isJailBrokenCustom;
-    } catch (e) {
-      print('Error checking JailBroken status with custom detection: $e');
-      return false;
+    if (Platform.isIOS) {
+      final bool jailbroken = await _channel.invokeMethod('isJailBrokenCustom');
+      return jailbroken;
     }
+    return false; // Android devices return false for iOS-specific method
   }
 
   // (iOS ONLY) Get detailed breakdown of jailbreak detection methods
   static Future<Map<String, dynamic>> get jailbreakDetails async {
-    if (Platform.isAndroid) return {};
-    try {
-      final result = await _channel.invokeMethod('getJailbreakDetails');
-      if (result is Map) {
-        return Map<String, dynamic>.from(result.cast<String, dynamic>());
-      }
-      return {};
-    } catch (e) {
-      print('Error getting jailbreak details: $e');
-      return {};
+    if (Platform.isIOS) {
+      final Map<Object?, Object?> result =
+          await _channel.invokeMethod('jailbreakDetails');
+      return Map<String, dynamic>.from(result);
     }
+    return {}; // Android devices return empty map for iOS-specific method
   }
 
   // Can this device mock location - no need to root!
@@ -125,5 +116,17 @@ class SafeDevice {
       print('Error checking USB Debugging status: $e');
       return false;
     }
+  }
+
+  /// Get detailed root detection results for Android only
+  /// This provides a breakdown of all detection methods for debugging
+  /// Returns empty map on iOS devices
+  static Future<Map<String, dynamic>> get rootDetectionDetails async {
+    if (Platform.isAndroid) {
+      final Map<Object?, Object?> result =
+          await _channel.invokeMethod('rootDetectionDetails');
+      return Map<String, dynamic>.from(result);
+    }
+    return {}; // iOS devices return empty map for Android-specific method
   }
 }

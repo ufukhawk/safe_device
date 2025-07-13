@@ -32,8 +32,7 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
 
         final MethodChannel channel = new MethodChannel(
                 binding.getBinaryMessenger(),
-                "safe_device"
-        );
+                "safe_device");
         channel.setMethodCallHandler(this);
     }
 
@@ -73,7 +72,8 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
         } else if (call.method.equals("isMockLocation")) {
             if (locationAssistantListener.isMockLocationsDetected()) {
                 result.success(true);
-            } else if (locationAssistantListener.getLatitude() != null && locationAssistantListener.getLongitude() != null) {
+            } else if (locationAssistantListener.getLatitude() != null
+                    && locationAssistantListener.getLongitude() != null) {
                 result.success(false);
             } else {
                 // If we don't have location yet, we might say "can't confirm yet"
@@ -81,6 +81,8 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
                 // For now, let's just say false
                 result.success(false);
             }
+        } else if (call.method.equals("rootDetectionDetails")) {
+            result.success(RootedCheck.getRootDetectionDetails(context));
         } else {
             result.notImplemented();
         }
@@ -134,12 +136,14 @@ class LocationAssistantListener implements LocationAssistant.Listener {
 
     @Override
     public void onNewLocationAvailable(Location location) {
-        if (location == null) return;
+        if (location == null)
+            return;
         latitude = String.valueOf(location.getLatitude());
         longitude = String.valueOf(location.getLongitude());
 
         // In many detection strategies, if a location has the isFromMockProvider flag,
-        // you might consider that a mock location. But in modern Android, that's not reliable.
+        // you might consider that a mock location. But in modern Android, that's not
+        // reliable.
         // You could do something like:
         if (location.isFromMockProvider()) {
             isMockLocationsDetected = true;
