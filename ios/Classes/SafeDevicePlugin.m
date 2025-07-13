@@ -1,5 +1,6 @@
 #import "SafeDevicePlugin.h"
 #import <DTTJailbreakDetection/DTTJailbreakDetection.h>
+#import "SafeDeviceJailbreakDetection.h"
 
 @implementation SafeDevicePlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
@@ -17,8 +18,8 @@
     result([NSNumber numberWithBool:[self isJailBroken]]);
   }else if ([@"isJailBrokenCustom" isEqualToString:call.method]) {
     result([NSNumber numberWithBool:[self isJailBrokenCustom]]);
-  }else if ([@"getJailbreakDetails" isEqualToString:call.method]) {
-    result([self getJailbreakDetails]);
+  }else if ([@"jailbreakDetails" isEqualToString:call.method]) {
+    result([SafeDeviceJailbreakDetection getJailbreakDetails]);
   }else if ([@"canMockLocation" isEqualToString:call.method]) {
     //For now we have returned if device is Jail Broken or if it's not real device. There is no
     //strong detection of Mock location in iOS
@@ -96,27 +97,45 @@
         return [self hasObviousJailbreakSigns];
     }
     
-    // Production environment - full detection
-    BOOL dttResult = [DTTJailbreakDetection isJailbroken];
+    // Use enhanced detection that includes palera1n support
+    BOOL enhancedResult = [SafeDeviceJailbreakDetection isJailbroken];
     
-    // If DTT says jailbroken, double-check environment variables
-    if (dttResult && [self hasLegitimateEnvironmentVariables]) {
+    // If enhanced detection says jailbroken, double-check environment variables
+    if (enhancedResult && [self hasLegitimateEnvironmentVariables]) {
         // Probably false positive from development environment
         return [self hasObviousJailbreakSigns];
     }
     
-    return dttResult;
+    // Fall back to DTT if enhanced detection doesn't detect anything
+    if (!enhancedResult) {
+        BOOL dttResult = [DTTJailbreakDetection isJailbroken];
+        
+        // If DTT says jailbroken, double-check environment variables
+        if (dttResult && [self hasLegitimateEnvironmentVariables]) {
+            // Probably false positive from development environment
+            return [self hasObviousJailbreakSigns];
+        }
+        
+        return dttResult;
+    }
+    
+    return enhancedResult;
 }
 
 - (BOOL)hasObviousJailbreakSigns {
     // Check for obvious jailbreak files
     NSArray *jailbreakPaths = @[
         @"/Applications/Cydia.app",
+        @"/Applications/Sileo.app",
         @"/Library/MobileSubstrate/MobileSubstrate.dylib",
         @"/bin/bash",
         @"/usr/sbin/sshd",
         @"/etc/apt",
-        @"/private/var/lib/apt/"
+        @"/private/var/lib/apt/",
+        @"/var/jb",
+        @"/var/jb/usr/bin/apt",
+        @"/var/jb/usr/bin/sileo",
+        @"/var/jb/usr/bin/palera1n"
     ];
     
     for (NSString *path in jailbreakPaths) {
@@ -126,21 +145,19 @@
     }
     
     // Check for URL schemes
-    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://"]]) {
-        return YES;
+    NSArray *schemes = @[@"cydia://", @"sileo://", @"palera1n://"];
+    for (NSString *scheme in schemes) {
+        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:scheme]]) {
+            return YES;
+        }
     }
     
     return NO;
 }
 
 - (BOOL)isJailBrokenCustom {
-    // Custom detection with development environment awareness
-    if ([self isDevelopmentEnvironment]) {
-        return [self hasObviousJailbreakSigns];
-    }
-    
-    // Use enhanced detection in production
-    return [self hasObviousJailbreakSigns];
+    // Use enhanced detection that includes palera1n support
+    return [SafeDeviceJailbreakDetection isJailbroken];
 }
 
 - (NSDictionary*)getJailbreakDetails {
@@ -148,14 +165,20 @@
     BOOL hasLegitEnvVars = [self hasLegitimateEnvironmentVariables];
     BOOL obviousJailbreak = [self hasObviousJailbreakSigns];
     
-    return @{
-        @"isSimulator": @(TARGET_OS_SIMULATOR),
-        @"isDevelopmentEnvironment": @(isDev),
-        @"hasLegitimateEnvironmentVariables": @(hasLegitEnvVars),
-        @"hasObviousJailbreakSigns": @(obviousJailbreak),
-        @"dttResult": @([DTTJailbreakDetection isJailbroken]),
-        @"finalResult": @([self isJailBroken])
-    };
+    // Get detailed detection results from enhanced detection
+    NSDictionary *enhancedDetails = [SafeDeviceJailbreakDetection getJailbreakDetails];
+    
+    // Create combined result
+    NSMutableDictionary *combinedResult = [NSMutableDictionary dictionaryWithDictionary:enhancedDetails];
+    
+    // Add legacy information for backward compatibility
+    [combinedResult setObject:@(isDev) forKey:@"isDevelopmentEnvironment"];
+    [combinedResult setObject:@(hasLegitEnvVars) forKey:@"hasLegitimateEnvironmentVariables"];
+    [combinedResult setObject:@(obviousJailbreak) forKey:@"hasObviousJailbreakSigns"];
+    [combinedResult setObject:@([DTTJailbreakDetection isJailbroken]) forKey:@"dttResult"];
+    [combinedResult setObject:@([self isJailBroken]) forKey:@"finalResult"];
+    
+    return [combinedResult copy];
 }
 
 - (BOOL) isRealDevice{

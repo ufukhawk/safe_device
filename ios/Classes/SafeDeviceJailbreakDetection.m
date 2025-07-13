@@ -7,6 +7,8 @@
 
 #import "SafeDeviceJailbreakDetection.h"
 #import <UIKit/UIKit.h>
+#import <sys/mount.h>
+#import <sys/stat.h>
 
 @implementation SafeDeviceJailbreakDetection
 
@@ -64,7 +66,85 @@
             @"/private/var/lib/dpkg",
             @"/usr/bin/dpkg",
             @"/usr/sbin/dpkg",
-            @"/var/lib/dpkg/status"
+            @"/var/lib/dpkg/status",
+            
+            // palera1n-specific paths
+            @"/var/jb",
+            @"/var/jb/usr/bin/apt",
+            @"/var/jb/usr/bin/dpkg",
+            @"/var/jb/usr/lib/libellekit.dylib",
+            @"/var/jb/Library/LaunchDaemons/jb.plist",
+            @"/var/jb/usr/share/procursus",
+            @"/var/jb/usr/bin/sileo",
+            @"/var/jb/usr/bin/palera1n",
+            @"/var/jb/usr/share/jailbreak",
+            @"/var/jb/Applications/Sileo.app",
+            @"/var/jb/Applications/loader.app",
+            @"/var/jb/usr/lib/libsubstrate.dylib",
+            @"/var/jb/usr/lib/substrate",
+            @"/var/jb/Library/MobileSubstrate",
+            @"/var/jb/Library/dpkg",
+            @"/var/jb/var/lib/dpkg/status",
+            @"/var/jb/etc/apt",
+            @"/var/jb/var/cache/apt",
+            @"/var/jb/var/lib/apt",
+            @"/var/jb/usr/share/bigboss",
+            @"/var/jb/usr/share/entitlements",
+            @"/var/jb/usr/include",
+            @"/var/jb/Library/Frameworks/CydiaSubstrate.framework",
+            @"/var/jb/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist",
+            @"/var/jb/usr/libexec/ellekit",
+            @"/var/jb/usr/lib/TweakInject",
+            @"/var/jb/usr/lib/pspawn_payload-stg2.dylib",
+            @"/var/jb/usr/lib/pspawn_payload.dylib",
+            @"/var/jb/usr/share/zsh",
+            @"/var/jb/usr/bin/zsh",
+            @"/var/jb/usr/bin/killall",
+            @"/var/jb/usr/bin/sbreload",
+            @"/var/jb/usr/bin/uicache",
+            @"/var/jb/usr/bin/ldrestart",
+            @"/var/jb/usr/bin/jbctl",
+            @"/var/jb/System/Library/CoreServices/SpringBoard.app/PaleLdr.dylib",
+            @"/var/jb/basebin",
+            @"/var/jb/usr/lib/libpam.dylib",
+            @"/var/jb/usr/lib/libssl.dylib",
+            @"/var/jb/usr/lib/libcrypto.dylib",
+            
+            // Sileo package manager (palera1n's default)
+            @"/Applications/Sileo.app",
+            @"/private/var/mobile/Library/Sileo",
+            @"/var/mobile/Library/Sileo",
+            @"/var/mobile/Library/Preferences/org.coolstar.SileoStore.plist",
+            
+            // Procursus bootstrap files
+            @"/usr/share/procursus",
+            @"/Library/dpkg/info/procursus-keyring.list",
+            @"/Library/dpkg/info/procursus-keyring.md5sums",
+            @"/var/lib/dpkg/info/procursus-keyring.list",
+            @"/var/lib/dpkg/info/procursus-keyring.md5sums",
+            
+            // Additional rootless jailbreak libraries
+            @"/usr/lib/libjailbreak.dylib",
+            @"/usr/lib/libhooker.dylib",
+            @"/usr/lib/libblackjack.dylib",
+            @"/usr/lib/libiosexec.dylib",
+            @"/usr/lib/libcolorpicker.dylib",
+            @"/usr/lib/libactivator.dylib",
+            @"/usr/lib/libapplist.dylib",
+            @"/usr/lib/librocketbootstrap.dylib",
+            @"/usr/lib/libsubstitute.dylib",
+            @"/usr/lib/libdobby.dylib",
+            @"/usr/lib/libellekit.dylib",
+            @"/usr/lib/libopendirectory.dylib",
+            @"/usr/lib/libsystem_jailbreak.dylib",
+            
+            // Environment files that indicate jailbreak
+            @"/etc/profile",
+            @"/etc/bashrc",
+            @"/etc/zshrc",
+            @"/private/etc/profile",
+            @"/private/etc/bashrc",
+            @"/private/etc/zshrc"
         ];
     });
     return paths;
@@ -76,11 +156,85 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         schemes = @[
+            // Package managers
             @"cydia://",
             @"sileo://",
             @"zebra://",
+            @"installer://",
+            
+            // Jailbreak tools
+            @"checkra1n://",
+            @"palera1n://",
+            @"undecimus://",
+            @"unc0ver://",
+            @"taurine://",
+            @"odyssey://",
+            @"odysseyra1n://",
+            @"chimera://",
+            @"electra://",
+            @"h3lix://",
+            @"meridian://",
+            @"phoenix://",
+            @"doublehelix://",
+            @"evasion://",
+            @"evasi0n://",
+            @"pangu://",
+            @"taig://",
+            @"limera1n://",
+            @"blackra1n://",
+            @"greenpois0n://",
+            @"redsn0w://",
+            @"sn0wbreeze://",
+            @"pwnagetool://",
+            @"p0sixspwn://",
+            @"absinthe://",
+            @"spirit://",
+            @"jailbreakme://",
+            @"jailbreakme3://",
+            
+            // File managers
             @"filza://",
-            @"activator://"
+            @"icleaner://",
+            
+            // Tweak frameworks
+            @"substitute://",
+            @"substrate://",
+            @"ellekit://",
+            @"mobilesubstrate://",
+            @"substrate-safe-mode://",
+            @"safemode://",
+            
+            // Theming
+            @"winterboard://",
+            @"anemone://",
+            @"snowboard://",
+            
+            // Utilities
+            @"activator://",
+            @"sbsettings://",
+            @"flex://",
+            @"liberty://",
+            @"unsub://",
+            @"flyjb://",
+            @"shadow://",
+            @"vnodebypass://",
+            @"kernbypass://",
+            @"choicy://",
+            @"tsprotector://",
+            @"xcon://",
+            
+            // App modifications
+            @"phantom://",
+            @"watusi://",
+            @"crackerxi://",
+            @"appstore++://",
+            
+            // Support libraries
+            @"preferenceloader://",
+            @"rocketbootstrap://",
+            @"applist://",
+            @"libactivator://",
+            @"flipswitch://"
         ];
     });
     return schemes;
@@ -110,7 +264,9 @@
            [self canViolateSandbox] ||
            [self hasJailbreakEnvironmentVariables] ||
            [self hasSuspiciousSymlinks] ||
-           [self hasJailbreakProcesses];
+           [self hasJailbreakProcesses] ||
+           [self hasPalera1nRootlessBootstrap] ||
+           [self hasJailbreakMountPoints];
 }
 
 #pragma mark - Path-based Detection
@@ -222,7 +378,40 @@
     NSArray<NSString *> *suspiciousVariables = @[
         @"DYLD_INSERT_LIBRARIES",
         @"_MSSafeMode",
-        @"_SafeMode"
+        @"_SafeMode",
+        @"JB_ROOT_PATH",
+        @"JB_BINPACK_PATH",
+        @"PALERA1N_ROOTLESS",
+        @"PALERA1N_JBROOT",
+        @"ELLEKIT_INSERTED",
+        @"SUBSTITUTE_INSERTED",
+        @"SUBSTRATE_INSERTED",
+        @"TWEAKINJECT_INSERTED",
+        @"PSPAWN_PAYLOAD_INSERTED",
+        @"ROOTLESS_BOOTSTRAP_PATH",
+        @"PROCURSUS_ROOT",
+        @"SILEO_INSTALLED",
+        @"MOBILESUBSTRATE_INSERTED",
+        @"CYCRIPT_INSERTED",
+        @"FRIDA_INSERTED",
+        @"FLEXBE_INSERTED",
+        @"SPRINGBOARD_HOOKED",
+        @"LAUNCHD_HOOKED",
+        @"AMFID_PAYLOAD_INSERTED",
+        @"KERNBYPASS_INSERTED",
+        @"LIBERTY_INSERTED",
+        @"SHADOW_INSERTED",
+        @"FLYJB_INSERTED",
+        @"VNODEBYPASS_INSERTED",
+        @"JAILBREAK_DETECTION_BYPASS",
+        @"CHOICY_INSERTED",
+        @"TSPROTECTOR_INSERTED",
+        @"XCON_INSERTED",
+        @"UNSUB_INSERTED",
+        @"HIDDENJB_INSERTED",
+        @"KERNBYPASS_INSERTED",
+        @"AKERNELBYPASS_INSERTED",
+        @"BKERNELBYPASS_INSERTED"
     ];
     
     for (NSString *variable in suspiciousVariables) {
@@ -289,6 +478,96 @@
 
 #pragma mark - Additional Helper Methods
 
+#pragma mark - Palera1n-specific Detection
+
+/// Checks for palera1n rootless bootstrap installation
++ (BOOL)hasPalera1nRootlessBootstrap {
+    // Skip on simulator
+    if ([self isSimulator]) {
+        return NO;
+    }
+    
+    // Check for /var/jb directory structure
+    NSArray<NSString *> *palera1nPaths = @[
+        @"/var/jb",
+        @"/var/jb/usr",
+        @"/var/jb/usr/bin",
+        @"/var/jb/usr/lib",
+        @"/var/jb/Library",
+        @"/var/jb/Applications"
+    ];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    for (NSString *path in palera1nPaths) {
+        if ([fileManager fileExistsAtPath:path]) {
+            return YES;
+        }
+    }
+    
+    // Check for palera1n-specific binaries
+    NSArray<NSString *> *palera1nBinaries = @[
+        @"/var/jb/usr/bin/palera1n",
+        @"/var/jb/usr/bin/sileo",
+        @"/var/jb/usr/bin/apt",
+        @"/var/jb/usr/bin/dpkg",
+        @"/var/jb/usr/bin/jbctl"
+    ];
+    
+    for (NSString *binary in palera1nBinaries) {
+        if ([fileManager fileExistsAtPath:binary]) {
+            return YES;
+        }
+    }
+    
+    // Check for ElleKit (palera1n's hooking framework)
+    NSArray<NSString *> *ellekitPaths = @[
+        @"/var/jb/usr/lib/libellekit.dylib",
+        @"/var/jb/usr/libexec/ellekit"
+    ];
+    
+    for (NSString *path in ellekitPaths) {
+        if ([fileManager fileExistsAtPath:path]) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+/// Checks for suspicious mount points that indicate jailbreak
++ (BOOL)hasJailbreakMountPoints {
+    // Skip on simulator
+    if ([self isSimulator]) {
+        return NO;
+    }
+    
+    // Check for /var/jb mount point (rootless bootstrap)
+    struct statfs fs;
+    if (statfs("/var/jb", &fs) == 0) {
+        return YES;
+    }
+    
+    // Check for other suspicious mount points
+    NSArray<NSString *> *suspiciousMounts = @[
+        @"/Developer",
+        @"/var/stash",
+        @"/var/db/stash",
+        @"/var/mobile/Library/Cydia",
+        @"/var/mobile/Library/Sileo",
+        @"/var/mobile/Library/SBSettings",
+        @"/var/mobile/Library/Preferences/com.saurik.Cydia.plist",
+        @"/var/mobile/Library/Preferences/org.coolstar.SileoStore.plist"
+    ];
+    
+    for (NSString *mount in suspiciousMounts) {
+        if (statfs([mount UTF8String], &fs) == 0) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 /// Combines multiple detection methods for enhanced reliability
 + (NSDictionary<NSString *, NSNumber *> *)getJailbreakDetails {
     BOOL isSimulatorEnvironment = [self isSimulator];
@@ -300,7 +579,9 @@
         @"canViolateSandbox": @(isSimulatorEnvironment ? NO : [self canViolateSandbox]),
         @"hasEnvironmentVariables": @(isSimulatorEnvironment ? NO : [self hasJailbreakEnvironmentVariables]),
         @"hasSuspiciousSymlinks": @(isSimulatorEnvironment ? NO : [self hasSuspiciousSymlinks]),
-        @"hasJailbreakProcesses": @(isSimulatorEnvironment ? NO : [self hasJailbreakProcesses])
+        @"hasJailbreakProcesses": @(isSimulatorEnvironment ? NO : [self hasJailbreakProcesses]),
+        @"hasPalera1nRootlessBootstrap": @(isSimulatorEnvironment ? NO : [self hasPalera1nRootlessBootstrap]),
+        @"hasJailbreakMountPoints": @(isSimulatorEnvironment ? NO : [self hasJailbreakMountPoints])
     };
 }
 
