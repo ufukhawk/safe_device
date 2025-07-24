@@ -25,10 +25,10 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
         this.context = binding.getApplicationContext();
-        locationAssistantListener = new LocationAssistantListener(context);
+        // locationAssistantListener = new LocationAssistantListener(context);
 
-        // Start location updates if needed
-        locationAssistantListener.getAssistant().startLocationUpdates();
+        // // Start location updates if needed
+        // locationAssistantListener.getAssistant().startLocationUpdates();
 
         final MethodChannel channel = new MethodChannel(
                 binding.getBinaryMessenger(),
@@ -83,8 +83,29 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
             }
         } else if (call.method.equals("rootDetectionDetails")) {
             result.success(RootedCheck.getRootDetectionDetails(context));
+        } else if (call.method.equals("init")) {
+            var configMap = call.arguments as Map<String, Object>;
+            SafeDeviceConfig config = new SafeDeviceConfig(configMap);
+            SafeDevicePlugin.init(context, config);
+            result.success(null);
         } else {
             result.notImplemented();
+        }
+    }
+
+    public static void init(Context context, SafeDeviceConfig config) {
+        // Start location updates if mock location check is enabled
+        if (config.isMockLocationCheckEnabled()) {
+            if (locationAssistantListener == null) {
+                locationAssistantListener = new LocationAssistantListener(context);
+            }
+            // Ensure the assistant is initialized
+            locationAssistantListener.getAssistant().startLocationUpdates();
+        } else {
+            if (locationAssistantListener != null) {                
+                // Stop location updates if mock location check is disabled
+                locationAssistantListener.getAssistant().stopLocationUpdates();
+            }
         }
     }
 

@@ -11,7 +11,7 @@ In your flutter project add the dependency:
 ```yml
 dependencies:
 ...
-  safe_device: ^1.3.4
+  safe_device: ^1.3.5
 ```
 
 ## Usage
@@ -22,6 +22,23 @@ dependencies:
 import 'package:safe_device/safe_device.dart';
 ```
 
+#### Configuration
+
+You can configure the plugin at startup using `SafeDevice.init` and `SafeDeviceConfig`. This is useful if you want to disable automatic check such as the mock location detection.
+
+```dart
+import 'package:safe_device/safe_device.dart';
+import 'package:safe_device/safe_device_config.dart';
+
+void main() async {
+  SafeDevice.init(
+    SafeDeviceConfig(mockLocationCheckEnabled: false), // disables mock location check on Android
+  );
+  // ...rest of your app
+}
+```
+
+It's not mandatory to configure the plugin at the start, if not provided a default configuration with everything enable is provided automatically
 #### Using it
 
 Checks whether device JailBroken on iOS/Android?
@@ -48,11 +65,15 @@ Checks whether device is real or emulator
 bool isRealDevice = await SafeDevice.isRealDevice;
 ```
 
-Can this device mock location - no need to root!
+bool isMockLocation = await SafeDevice.isMockLocation;
 
 ```
 bool isMockLocation = await SafeDevice.isMockLocation;
 ```
+
+**Android:** If mock location check is disabled via config, the check always returns `false` and no location updates are started. If enabled (default), the check is active.
+
+**iOS:** The config is stored for future use but does not affect current detection logic. Mock location detection on iOS is based on jailbreak/emulator status.
 
 (ANDROID ONLY) Check if application is running on external storage
 
@@ -119,15 +140,12 @@ Map<String, bool> details = await SafeDevice.jailbreakDetails;
 // }
 ```
 
+
 # Note:
 
 #### Mock location detection
 
-* **Android** - Location permission needs to be granted in app in order to detect mock location
-  properly
-* **iOS** - For now we are checking if device is Jail Broken or if it's not real device. There is no
-  strong detection of mock location in iOS *(Open the PR if you have better way for mock location
-  detection in iOS)*
+* **Android** - Location permission is required to detect mock location. The check can be disabled at runtime via config.
 
 ### DevelopmentMode
 

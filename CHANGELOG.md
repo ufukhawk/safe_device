@@ -1,3 +1,14 @@
+## 1.3.5
+
+* **Android Configurable Mock Location Detection**: The mock location check on Android is now conditional based on the configuration provided via the `init` method from Dart. If `mockLocationCheckEnabled` is set to `false`, mock location detection is disabled and location updates are not started. If no configuration is provided, the plugin behaves exactly as before for full backward compatibility.
+* **iOS Config Support**: The iOS plugin now accepts and stores the configuration from Dart via the `init` method, mirroring the Android API. While iOS does not currently use the mock location flag, this enables future extensibility and API consistency.
+
+### Technical Details
+- Added `SafeDeviceConfig` class, served to both Platform to include `mockLocationCheckEnabled` and future possible configuration
+- Added `init` method to both Android and iOS native plugins to receive and store configuration from Dart.
+- Android: Location updates and mock location checks are only started if enabled in config.
+- iOS: Configuration is stored for future use, since the only configuration available now is for mock location check which is not supported on iOS.
+
 ## 1.3.4 
 
 - **CRITICAL**: Fixed false positive root detection on real Android devices (especially Xiaomi/Redmi devices)

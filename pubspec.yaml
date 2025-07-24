@@ -1,6 +1,6 @@
 name: safe_device
 description: This package helps to detect iOS Simulator, Android Emulator and Debug Mode. This package also detects MockLocation/Fake GPS location on Android Device. Also check device is real or not.
-version: 1.3.4
+version: 1.3.5
 homepage: https://github.com/xamdesign/safe_device
 
 environment:
