@@ -1,4 +1,9 @@
-class SafeDeviceConfig {
+package com.xamdesign.safe_device;
+
+
+import java.util.Map;
+
+public class SafeDeviceConfig {
     private boolean mockLocationCheckEnabled;
 
     public SafeDeviceConfig(boolean mockLocationCheckEnabled) {

@@ -10,10 +10,13 @@ import com.xamdesign.safe_device.Emulator.EmulatorCheck;
 import com.xamdesign.safe_device.ExternalStorage.ExternalStorageCheck;
 import com.xamdesign.safe_device.MockLocation.LocationAssistant;
 import com.xamdesign.safe_device.Rooted.RootedCheck;
+import com.xamdesign.safe_device.SafeDeviceConfig;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+
+import java.util.Map;
 
 /**
  * SafeDevicePlugin
@@ -84,7 +87,8 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
         } else if (call.method.equals("rootDetectionDetails")) {
             result.success(RootedCheck.getRootDetectionDetails(context));
         } else if (call.method.equals("init")) {
-            var configMap = call.arguments as Map<String, Object>;
+            @SuppressWarnings("unchecked")
+            Map<String, Object> configMap = (Map<String, Object>) call.arguments;
             SafeDeviceConfig config = new SafeDeviceConfig(configMap);
             SafeDevicePlugin.init(context, config);
             result.success(null);
@@ -96,6 +100,7 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
     public static void init(Context context, SafeDeviceConfig config) {
         // Start location updates if mock location check is enabled
         if (config.isMockLocationCheckEnabled()) {
+
             if (locationAssistantListener == null) {
                 locationAssistantListener = new LocationAssistantListener(context);
             }
