@@ -28,10 +28,6 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
         this.context = binding.getApplicationContext();
-        // locationAssistantListener = new LocationAssistantListener(context);
-
-        // // Start location updates if needed
-        // locationAssistantListener.getAssistant().startLocationUpdates();
 
         final MethodChannel channel = new MethodChannel(
                 binding.getBinaryMessenger(),
