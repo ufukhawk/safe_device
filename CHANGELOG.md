@@ -1,4 +1,4 @@
-## 1.3.5
+## 1.3.6
 
 * **Android Configurable Mock Location Detection**: The mock location check on Android is now conditional based on the configuration provided via the `init` method from Dart. If `mockLocationCheckEnabled` is set to `false`, mock location detection is disabled and location updates are not started. If no configuration is provided, the plugin behaves exactly as before for full backward compatibility.
 * **iOS Config Support**: The iOS plugin now accepts and stores the configuration from Dart via the `init` method, mirroring the Android API. While iOS does not currently use the mock location flag, this enables future extensibility and API consistency.
