@@ -68,12 +68,6 @@ public class EmulatorCheck {
                 || Build.MANUFACTURER.contains("Genymotion")
                 || Build.MODEL.startsWith("sdk_")
                 || Build.DEVICE.startsWith("emulator")
-                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-                || "google_sdk".equals(Build.PRODUCT)
-                // bluestacks
-                || "QC_Reference_Phone".equals(Build.BOARD) && !"xiaomi".equalsIgnoreCase(Build.MANUFACTURER)
-                // bluestacks
-                || Build.MANUFACTURER.contains("Genymotion")
                 || (Build.HOST.startsWith("Build") && !Build.MANUFACTURER.equalsIgnoreCase("sony"))
                 // MSI App Player
                 || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
@@ -97,6 +91,18 @@ public class EmulatorCheck {
                 // Enhanced architecture check
                 || isX86Architecture()
                 || checkEmulatorFiles();
+    }
+
+    /**
+     * Checks if the manufacturer is one of those known to use the 'QC_Reference_Phone' board
+     * on real devices, to avoid false positives.
+     */
+    private static boolean isKnownManufacturer() {
+        String manufacturer = Build.MANUFACTURER.toLowerCase();
+        return "xiaomi".equals(manufacturer)
+                || "samsung".equals(manufacturer)
+                || "motorola".equals(manufacturer)
+                || "lge".equals(manufacturer); // LG Electronics
     }
 
     /**
@@ -146,7 +152,7 @@ public class EmulatorCheck {
                 || Build.DEVICE.toLowerCase().contains("bluestacks")
                 || Build.PRODUCT.toLowerCase().contains("bluestacks")
                 || "BlueStacks".equals(Build.MANUFACTURER)
-                || "QC_Reference_Phone".equals(Build.BOARD) && !"xiaomi".equalsIgnoreCase(Build.MANUFACTURER);
+                || "QC_Reference_Phone".equals(Build.BOARD) && !isKnownManufacturer();
     }
 
     /**
