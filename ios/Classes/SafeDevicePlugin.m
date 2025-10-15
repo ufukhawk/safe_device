@@ -1,6 +1,10 @@
 #import "SafeDevicePlugin.h"
 #import <DTTJailbreakDetection/DTTJailbreakDetection.h>
 
+@interface SafeDevicePlugin ()
+@property (nonatomic, strong) SafeDeviceConfig *config;
+@end
+
 @implementation SafeDevicePlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
@@ -25,7 +29,11 @@
     result([NSNumber numberWithBool:([self isJailBroken] || ![self isRealDevice])]);
   }else if ([@"isRealDevice" isEqualToString:call.method]) {
     result([NSNumber numberWithBool:[self isRealDevice]]);
-  } else {
+  }else if ([@"init" isEqualToString:call.method]) {
+        NSDictionary *dict = call.arguments;
+        self.config = [[SafeDeviceConfig alloc] initWithDictionary:dict];
+        result(nil);
+    } else {
     result(FlutterMethodNotImplemented);
   }
 }
