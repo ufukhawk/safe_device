@@ -16,6 +16,12 @@ Jailbroken, root, emulator and mock location detection
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.dependency 'DTTJailbreakDetection'
-  s.platform = :ios, '8.0'
+  s.platform = :ios, '9.0'
+  s.requires_arc = true
+  
+  # Simple pod configuration for Objective-C only
+  s.pod_target_xcconfig = {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386'
+  }
 
 end
