@@ -1,5 +1,9 @@
 #import "SafeDevicePlugin.h"
+#import "SafeDeviceConfig.h"
 #import <DTTJailbreakDetection/DTTJailbreakDetection.h>
+#import <UIKit/UIKit.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 @interface SafeDevicePlugin ()
 @property (nonatomic, strong) SafeDeviceConfig *config;
