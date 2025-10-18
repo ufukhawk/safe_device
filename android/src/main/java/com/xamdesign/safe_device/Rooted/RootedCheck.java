@@ -47,8 +47,15 @@ public class RootedCheck {
         // Dangerous properties check (more lenient for Samsung development devices)
         boolean dangerousProps = checkDangerousProps(isDevelopmentEnvironment);
 
-        // Special handling for Xiaomi devices (including Redmi)
+        // Special handling for Samsung devices on Android 15+
         String brand = Build.BRAND.toLowerCase();
+        if (brand.contains(SAMSUNG) && Build.VERSION.SDK_INT >= 34) { // Android 15 is API 34
+            // For Samsung Android 15+, be more conservative
+            // Only flag if we have BOTH su binary AND obvious root signs
+            return hasObviousRootSigns() && suBinaryFound;
+        }
+
+        // Special handling for Xiaomi devices (including Redmi)
         if (brand.contains("xiaomi") || brand.contains("redmi") || brand.contains("poco")) {
             // For Xiaomi devices, use only the most reliable detection methods
             // MIUI can cause false positives, so be more conservative
