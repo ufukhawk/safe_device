@@ -1,5 +1,6 @@
 #import "SafeDevicePlugin.h"
 #import "SafeDeviceConfig.h"
+#import "SafeDeviceJailbreakDetection.h"
 #import <DTTJailbreakDetection/DTTJailbreakDetection.h>
 #import <UIKit/UIKit.h>
 #include <unistd.h>
@@ -110,14 +111,17 @@
     
     // Production environment - full detection
     BOOL dttResult = [DTTJailbreakDetection isJailbroken];
+    BOOL customResult = [SafeDeviceJailbreakDetection isJailbroken];
     
-    // If DTT says jailbroken, double-check environment variables
-    if (dttResult && [self hasLegitimateEnvironmentVariables]) {
+    BOOL result = dttResult || customResult;
+    
+    // If DTT or custom detection says jailbroken, double-check environment variables
+    if (result && [self hasLegitimateEnvironmentVariables]) {
         // Probably false positive from development environment
         return [self hasObviousJailbreakSigns];
     }
     
-    return dttResult;
+    return result;
 }
 
 - (BOOL)hasObviousJailbreakSigns {
@@ -152,7 +156,7 @@
     }
     
     // Use enhanced detection in production
-    return [self hasObviousJailbreakSigns];
+    return [SafeDeviceJailbreakDetection isJailbroken];
 }
 
 - (NSDictionary*)getJailbreakDetails {
@@ -166,6 +170,7 @@
         @"hasLegitimateEnvironmentVariables": @(hasLegitEnvVars),
         @"hasObviousJailbreakSigns": @(obviousJailbreak),
         @"dttResult": @([DTTJailbreakDetection isJailbroken]),
+        @"customResult": @([SafeDeviceJailbreakDetection isJailbroken])
         @"finalResult": @([self isJailBroken])
     };
 }

@@ -1,3 +1,6 @@
+## 1.3.9
+
+* Resolved (#86)[https://github.com/ufukhawk/safe_device/issues/86]. Fixed `SafeDeviceJailbreakDetection` not being called by `isJailBrokenCustom` nor `isJailBroken`.
 
 ## 1.3.8
 * iOS bug fix
