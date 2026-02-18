@@ -165,7 +165,7 @@
     BOOL obviousJailbreak = [self hasObviousJailbreakSigns];
     
     return @{
-        @"isSimulator": @(TARGET_OS_SIMULATOR),
+        @"isSimulator": @((BOOL) TARGET_OS_SIMULATOR),
         @"isDevelopmentEnvironment": @(isDev),
         @"hasLegitimateEnvironmentVariables": @(hasLegitEnvVars),
         @"hasObviousJailbreakSigns": @(obviousJailbreak),
