@@ -170,7 +170,7 @@
         @"hasLegitimateEnvironmentVariables": @(hasLegitEnvVars),
         @"hasObviousJailbreakSigns": @(obviousJailbreak),
         @"dttResult": @([DTTJailbreakDetection isJailbroken]),
-        @"customResult": @([SafeDeviceJailbreakDetection isJailbroken])
+        @"customResult": @([SafeDeviceJailbreakDetection isJailbroken]),
         @"finalResult": @([self isJailBroken])
     };
 }
