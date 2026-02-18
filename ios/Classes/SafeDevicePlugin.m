@@ -26,8 +26,8 @@
     result([NSNumber numberWithBool:[self isJailBroken]]);
   }else if ([@"isJailBrokenCustom" isEqualToString:call.method]) {
     result([NSNumber numberWithBool:[self isJailBrokenCustom]]);
-  }else if ([@"getJailbreakDetails" isEqualToString:call.method]) {
-    result([self getJailbreakDetails]);
+  }else if ([@"jailbreakDetails" isEqualToString:call.method]) {
+    result([self jailbreakDetails]);
   }else if ([@"canMockLocation" isEqualToString:call.method]) {
     //For now we have returned if device is Jail Broken or if it's not real device. There is no
     //strong detection of Mock location in iOS
@@ -159,7 +159,7 @@
     return [SafeDeviceJailbreakDetection isJailbroken];
 }
 
-- (NSDictionary*)getJailbreakDetails {
+- (NSDictionary*)jailbreakDetails {
     BOOL isDev = [self isDevelopmentEnvironment];
     BOOL hasLegitEnvVars = [self hasLegitimateEnvironmentVariables];
     BOOL obviousJailbreak = [self hasObviousJailbreakSigns];
