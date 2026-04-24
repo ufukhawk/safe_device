@@ -9,8 +9,6 @@ on:
     types: [opened]
   pull_request_review:
     types: [submitted]
-  pull_request_target:
-    types: [opened, synchronize, reopened]
 
 jobs:
   claude-mention:
@@ -36,31 +34,3 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-  claude-pr-review:
-    if: github.event_name == 'pull_request_target'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-      issues: write
-      id-token: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Run Claude Code PR Review
-        uses: anthropics/claude-code-action@beta
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          direct_prompt: |
-            Bu pull request'i kapsamlı şekilde incele ve şunları değerlendir:
-            - Kod kalitesi ve best practices
-            - Potansiyel bug'lar ve güvenlik açıkları
-            - Performans sorunları
-            - Eksik hata yönetimi
-            Bulgularını PR yorumu olarak ekle.
