@@ -1,3 +1,6 @@
+## 1.3.10
+* Resolved [#96](https://github.com/ufukhawk/safe_device/issues/96). Fixed outdated `hasTestKeys` reference which caused Android builds to fail.
+
 ## 1.3.9
 
 * Resolved [#95](https://github.com/ufukhawk/safe_device/issues/95). Fixed `NullPointerException` crash when `isMockLocation` is called before the location listener is initialized (e.g. when `mockLocationCheckEnabled` is `false`).
