@@ -68,7 +68,7 @@ public class EmulatorCheck {
                 || Build.MANUFACTURER.contains("Genymotion")
                 || Build.MODEL.startsWith("sdk_")
                 || Build.DEVICE.startsWith("emulator")
-                || (Build.HOST.startsWith("Build") && !Build.MANUFACTURER.equalsIgnoreCase("sony"))
+                || (Build.HOST.startsWith("Build") && !isKnownRealDeviceManufacturer())
                 // MSI App Player
                 || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
                 || "google_sdk".equals(Build.PRODUCT)
@@ -96,15 +96,24 @@ public class EmulatorCheck {
     }
 
     /**
-     * Checks if the manufacturer is one of those known to use the 'QC_Reference_Phone' board
-     * on real devices, to avoid false positives.
+     * Returns true if the device is from a known real-device manufacturer.
+     * Used to avoid false positives in broad emulator checks like Build.HOST.
      */
-    private static boolean isKnownManufacturer() {
+    private static boolean isKnownRealDeviceManufacturer() {
         String manufacturer = Build.MANUFACTURER.toLowerCase();
-        return "xiaomi".equals(manufacturer)
-                || "samsung".equals(manufacturer)
-                || "motorola".equals(manufacturer)
-                || "lge".equals(manufacturer); // LG Electronics
+        return manufacturer.contains("samsung")
+                || manufacturer.contains("sony")
+                || manufacturer.contains("xiaomi")
+                || manufacturer.contains("motorola")
+                || manufacturer.contains("lge")
+                || manufacturer.contains("vivo")
+                || manufacturer.contains("oppo")
+                || manufacturer.contains("realme")
+                || manufacturer.contains("huawei")
+                || manufacturer.contains("honor")
+                || manufacturer.contains("oneplus")
+                || manufacturer.contains("asus")
+                || manufacturer.contains("nokia");
     }
 
     /**
@@ -154,7 +163,7 @@ public class EmulatorCheck {
                 || Build.DEVICE.toLowerCase().contains("bluestacks")
                 || Build.PRODUCT.toLowerCase().contains("bluestacks")
                 || "BlueStacks".equals(Build.MANUFACTURER)
-                || "QC_Reference_Phone".equals(Build.BOARD) && !isKnownManufacturer();
+                || "QC_Reference_Phone".equals(Build.BOARD) && !isKnownRealDeviceManufacturer();
     }
 
     /**

@@ -47,13 +47,25 @@ public class RootedCheck {
         // Dangerous properties check (more lenient for Samsung development devices)
         boolean dangerousProps = checkDangerousProps(isDevelopmentEnvironment);
 
-        // Special handling for Xiaomi devices (including Redmi)
         String brand = Build.BRAND.toLowerCase();
+
+        // Xiaomi/Redmi/POCO: MIUI causes false positives — require multiple strong indicators
         if (brand.contains("xiaomi") || brand.contains("redmi") || brand.contains("poco")) {
-            // For Xiaomi devices, use only the most reliable detection methods
-            // MIUI can cause false positives, so be more conservative
             return hasObviousRootSigns() ||
-                    (basicRootCheck && suBinaryFound); // Need both basic check AND su binary
+                    (basicRootCheck && suBinaryFound);
+        }
+
+        // Samsung: Knox security system can trigger false positives (e.g. Z Fold5, SM-F946N).
+        // Require obvious root signs OR both RootBeer AND su binary to reduce false positives.
+        if (brand.contains("samsung")) {
+            return hasObviousRootSigns() ||
+                    (rootBeerResult && suBinaryFound);
+        }
+
+        // Vivo: some models report suspicious properties on stock firmware
+        if (brand.contains("vivo")) {
+            return hasObviousRootSigns() ||
+                    (basicRootCheck && suBinaryFound);
         }
 
         // In development environment, be more lenient
