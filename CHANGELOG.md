@@ -1,3 +1,7 @@
+## 1.3.10
+
+* Fixed build error: `checkTestKeys()` method was missing from `RootedCheck.java` — the call in `getRootDetectionDetails()` now uses an inline `Build.TAGS` check instead.
+
 ## 1.3.9
 
 * Resolved [#95](https://github.com/ufukhawk/safe_device/issues/95). Fixed `NullPointerException` crash when `isMockLocation` is called before the location listener is initialized (e.g. when `mockLocationCheckEnabled` is `false`).

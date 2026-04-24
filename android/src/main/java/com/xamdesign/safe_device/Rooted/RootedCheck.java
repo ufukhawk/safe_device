@@ -116,7 +116,8 @@ public class RootedCheck {
         details.put("hasObviousRootSigns", hasObviousRootSigns());
 
         // Build-specific checks
-        details.put("hasTestKeys", checkTestKeys());
+        String buildTags = Build.TAGS;
+        details.put("hasTestKeys", buildTags != null && buildTags.contains("test-keys"));
         details.put("buildTagsHasTestKeys", checkBuildTags());
 
         // System properties
