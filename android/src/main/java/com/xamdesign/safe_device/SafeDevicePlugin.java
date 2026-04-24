@@ -51,6 +51,10 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        if (locationAssistantListener != null) {
+            locationAssistantListener.getAssistant().stopLocationUpdates();
+            locationAssistantListener = null;
+        }
         context = null;
     }
 
@@ -69,15 +73,14 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
         } else if (call.method.equals("usbDebuggingCheck")) {
             result.success(DevelopmentModeCheck.usbDebuggingCheck(context));
         } else if (call.method.equals("isMockLocation")) {
-            if (locationAssistantListener.isMockLocationsDetected()) {
+            if (locationAssistantListener == null) {
+                result.success(false);
+            } else if (locationAssistantListener.isMockLocationsDetected()) {
                 result.success(true);
             } else if (locationAssistantListener.getLatitude() != null
                     && locationAssistantListener.getLongitude() != null) {
                 result.success(false);
             } else {
-                // If we don't have location yet, we might say "can't confirm yet"
-                // or simply return false, or start a new request...
-                // For now, let's just say false
                 result.success(false);
             }
         } else if (call.method.equals("rootDetectionDetails")) {

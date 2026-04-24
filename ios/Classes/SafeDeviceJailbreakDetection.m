@@ -20,7 +20,11 @@ static NSArray<NSString *> * const jailbreakVarPaths = @[
     @"/var/cache/apt",
     @"/var/lib/cydia",
     @"/var/log/syslog",
-    @"/var/lib/dpkg/status"
+    @"/var/lib/dpkg/status",
+    // Palera1n rootless jailbreak indicators
+    @"/var/jb/.installed_palera1n",
+    @"/var/jb/usr/bin/su",
+    @"/var/jb/usr/lib/apt"
 ];
 
 /// Paths checked literally and with /var/jb prefix
@@ -36,7 +40,7 @@ static NSArray<NSString *> * const jailbreakNonVarPaths = @[
     @"/Applications/Snoop-itConfig.app",
     
     // System binaries commonly found on jailbroken devices
-    @"/bin/sh",
+    // Note: /bin/sh is intentionally excluded — it exists on stock iOS 16+ devices
     @"/bin/bash",
     @"/usr/sbin/sshd",
     @"/usr/libexec/sftp-server",
@@ -117,7 +121,12 @@ static NSArray<NSString *> * const jailbreakNonVarPaths = @[
     if ([self isSimulator]) {
         return NO;
     }
-    
+
+    // Mac Catalyst apps run on macOS which has a different filesystem — not jailbroken
+    #if TARGET_OS_MACCATALYST
+    return NO;
+    #endif
+
     return [self hasJailbreakPaths] ||
            [self canOpenJailbreakSchemes] ||
            [self canViolateSandbox] ||

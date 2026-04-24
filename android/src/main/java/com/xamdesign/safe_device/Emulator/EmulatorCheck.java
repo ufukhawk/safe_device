@@ -88,6 +88,8 @@ public class EmulatorCheck {
                 || isMEmu()
                 // BlueStacks specific checks
                 || isBlueStacks()
+                // MuMu Player specific checks
+                || isMuMuPlayer()
                 // Enhanced architecture check
                 || isX86Architecture()
                 || checkEmulatorFiles();
@@ -153,6 +155,18 @@ public class EmulatorCheck {
                 || Build.PRODUCT.toLowerCase().contains("bluestacks")
                 || "BlueStacks".equals(Build.MANUFACTURER)
                 || "QC_Reference_Phone".equals(Build.BOARD) && !isKnownManufacturer();
+    }
+
+    /**
+     * MuMu Player (NetEase) detection
+     */
+    private static boolean isMuMuPlayer() {
+        return Build.MANUFACTURER.toLowerCase().contains("netease")
+                || Build.BRAND.toLowerCase().contains("netease")
+                || Build.MODEL.toLowerCase().contains("mumu")
+                || Build.PRODUCT.toLowerCase().contains("nemu")
+                || Build.DEVICE.toLowerCase().contains("mumu")
+                || Build.FINGERPRINT.toLowerCase().contains("netease");
     }
 
     /**

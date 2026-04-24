@@ -187,7 +187,6 @@ public class RootedCheck {
 
         // LDPlayer and other emulators often have these characteristics when rooted
         return checkBuildTags() ||
-                checkTestKeys() ||
                 checkEmulatorRootFiles();
     }
 
@@ -222,21 +221,6 @@ public class RootedCheck {
         String buildTags = Build.TAGS;
         if (buildTags != null && buildTags.contains("test-keys")) {
             // Don't flag any devices with test-keys as rooted in development environment
-            if (isDevelopmentEnvironment()) {
-                return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check for test-keys in fingerprint
-     */
-    private static boolean checkTestKeys() {
-        String buildTags = Build.TAGS;
-        if (buildTags != null && buildTags.contains("test-keys")) {
-            // More lenient for any development devices, not just Samsung
             if (isDevelopmentEnvironment()) {
                 return false;
             }
@@ -348,8 +332,9 @@ public class RootedCheck {
      * Execute a command and check if it succeeds
      */
     private static boolean canExecuteCommand(String command) {
+        Process process = null;
         try {
-            Process process = Runtime.getRuntime().exec(command);
+            process = Runtime.getRuntime().exec(command);
             java.io.BufferedReader in = new java.io.BufferedReader(
                     new java.io.InputStreamReader(process.getInputStream()));
             String line = in.readLine();
@@ -357,6 +342,8 @@ public class RootedCheck {
             return line != null;
         } catch (Exception e) {
             return false;
+        } finally {
+            if (process != null) process.destroy();
         }
     }
 

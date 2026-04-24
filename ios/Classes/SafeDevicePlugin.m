@@ -103,6 +103,11 @@
 }
 
 - (BOOL)isJailBroken {
+    // Mac Catalyst apps run on macOS — not jailbroken
+    #if TARGET_OS_MACCATALYST
+    return NO;
+    #endif
+
     // If we're in development environment, be more lenient
     if ([self isDevelopmentEnvironment]) {
         // Only check for obvious jailbreak signs, ignore environment variables
