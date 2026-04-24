@@ -1,9 +1,18 @@
 ## 1.3.9
 
-* Resolved (#86)[https://github.com/ufukhawk/safe_device/issues/86]. Fixed `SafeDeviceJailbreakDetection` not being called by `isJailBrokenCustom` nor `isJailBroken`.
-* Resolved (#77)[https://github.com/ufukhawk/safe_device/issues/77]. Fixed `jailbreakDetails` method channel name.
+* Resolved [#95](https://github.com/ufukhawk/safe_device/issues/95). Fixed `NullPointerException` crash when `isMockLocation` is called before the location listener is initialized (e.g. when `mockLocationCheckEnabled` is `false`).
+* Resolved [#83](https://github.com/ufukhawk/safe_device/issues/83). Fixed GPS running continuously in background — location updates are now properly stopped when the plugin detaches from the Flutter engine.
+* Resolved [#91](https://github.com/ufukhawk/safe_device/issues/91). Fixed false positive jailbreak detection on iPad apps running on macOS (Mac Catalyst). Detection now always returns `false` on Mac Catalyst.
+* Resolved [#92](https://github.com/ufukhawk/safe_device/issues/92) and [#93](https://github.com/ufukhawk/safe_device/issues/93). Improved palera1n rootless jailbreak detection by adding specific indicator paths (`/var/jb/.installed_palera1n`, `/var/jb/usr/bin/su`, `/var/jb/usr/lib/apt`).
+* Resolved [#85](https://github.com/ufukhawk/safe_device/issues/85). Added MuMu Player (NetEase) emulator detection.
+* Resolved [#82](https://github.com/ufukhawk/safe_device/issues/82). Fixed false positive on Vivo Y11 — `isRealDevice` was incorrectly returning `false` due to an overly broad `Build.HOST` check; added Vivo and other common OEM manufacturers to the exclusion list. Applied conservative multi-indicator root detection for Vivo devices.
+* Resolved [#80](https://github.com/ufukhawk/safe_device/issues/80). Fixed false positive `isJailBroken` on Samsung Galaxy Z Fold5 — Knox security system was triggering detection on non-rooted devices. Samsung devices now require multiple strong indicators before being flagged as rooted.
+* iOS: Removed `/bin/sh` from jailbreak paths — this file is present on stock iOS 16+ devices and was causing false positives.
+* Android: Fixed process leak in `canExecuteCommand` — `process.destroy()` is now always called.
+* Android: Removed duplicate `checkTestKeys()` method (was identical to `checkBuildTags()`).
+* Resolved [#86](https://github.com/ufukhawk/safe_device/issues/86). Fixed `SafeDeviceJailbreakDetection` not being called by `isJailBrokenCustom` nor `isJailBroken`.
+* Resolved [#77](https://github.com/ufukhawk/safe_device/issues/77). Fixed `jailbreakDetails` method channel name.
 * Added missing bool cast for `isSimulator` value in `jailbreakDetails`.
-* Added most common rootless jailbreak paths
 
 ## 1.3.8
 * iOS bug fix
