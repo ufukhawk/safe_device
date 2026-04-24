@@ -1,6 +1,6 @@
 # safe_device (Null-Safety)
 
-<a href="https://pub.dev/packages/safe_device"><img src="https://img.shields.io/badge/pub-1.3.8-blue" alt="Safe Device" height="18"></a>
+<a href="https://pub.dev/packages/safe_device"><img src="https://img.shields.io/badge/pub-1.3.9-blue" alt="Safe Device" height="18"></a>
 <img src="https://imgur.com/Vw4Z93n.png" alt="Safe Device">
 Flutter (Null-Safety) Jailbroken, root, emulator and mock location detection.
 
@@ -11,7 +11,7 @@ In your flutter project add the dependency:
 ```yml
 dependencies:
 ...
-  safe_device: ^1.3.8
+  safe_device: ^1.3.9
 ```
 
 ## Usage
@@ -101,7 +101,7 @@ Map<String, dynamic> rootDetails = await SafeDevice.rootDetectionDetails;
 
 ## Enhanced iOS Jailbreak Detection
 
-The plugin now includes enhanced jailbreak detection for iOS with comprehensive path checking. The custom detection method checks for:
+The plugin includes enhanced jailbreak detection for iOS with comprehensive path checking. The custom detection method checks for:
 
 ### Jailbreak Tool Paths
 - Cydia and package managers (`/Applications/Cydia.app`, `/private/var/lib/apt`, etc.)
@@ -109,14 +109,19 @@ The plugin now includes enhanced jailbreak detection for iOS with comprehensive 
 - MobileSubstrate files (`/Library/MobileSubstrate/MobileSubstrate.dylib`)
 - APT package manager files (`/etc/apt`, `/var/lib/dpkg/status`)
 - Launch daemons (`/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist`)
+- Palera1n rootless jailbreak indicators (`/var/jb/.installed_palera1n`, etc.)
 
 ### Detection Methods
 - **Path Existence**: Checks for files and directories commonly present on jailbroken devices
-- **URL Scheme Detection**: Tests if jailbreak-related URL schemes can be opened
+- **URL Scheme Detection**: Tests if jailbreak-related URL schemes can be opened (`cydia://`, `sileo://`, `zebra://`, etc.)
 - **Sandbox Violation**: Attempts to write outside the app sandbox
 - **Environment Variables**: Checks for jailbreak-related environment variables
 - **Symbolic Link Detection**: Looks for suspicious symbolic links
 - **Process Detection**: Checks for running jailbreak-related processes
+
+### Platform Notes
+- **Simulator**: Always returns `false` — no jailbreak detection runs on simulator
+- **Mac Catalyst**: Always returns `false` — macOS filesystem structure differs from iOS
 
 ### Usage Example
 
@@ -128,27 +133,39 @@ bool isJailbroken = await SafeDevice.isJailBroken;
 bool isJailbrokenCustom = await SafeDevice.isJailBrokenCustom;
 
 // Detailed breakdown of detection methods
-Map<String, bool> details = await SafeDevice.jailbreakDetails;
+Map<String, dynamic> details = await SafeDevice.jailbreakDetails;
 // Returns:
 // {
-//   "hasPaths": false,
-//   "canOpenSchemes": false,
-//   "canViolateSandbox": false,
-//   "hasEnvironmentVariables": false,
-//   "hasSuspiciousSymlinks": false,
-//   "hasJailbreakProcesses": false
+//   "isSimulator": false,
+//   "isDevelopmentEnvironment": false,
+//   "hasObviousJailbreakSigns": false,
+//   "dttResult": false,
+//   "customResult": false,
+//   "finalResult": false
 // }
 ```
 
+## Android Emulator Detection
 
-# Note:
+Detects a wide range of Android emulators including:
+- Android SDK Emulator, Genymotion
+- LDPlayer, MEmu, BlueStacks, MuMu Player (NetEase), Nox, Droid4X
+
+## Known Limitations
+
+Root and jailbreak detection is a best-effort approach. A determined attacker using tools such as Magisk Hide or Zygisk can bypass detection. This plugin is intended as a security layer — not a guarantee.
+
+**Device-specific handling:** Some manufacturers (Samsung, Xiaomi, Vivo) ship with system properties or Knox security components that can cause false positives. The plugin applies conservative multi-indicator checks for these brands to balance accuracy and reliability.
+
+# Notes
 
 #### Mock location detection
 
-* **Android** - Location permission is required to detect mock location. The check can be disabled at runtime via config.
+* **Android** — Location permission is required to detect mock location. The check can be disabled at runtime via config.
+* **iOS** — Mock location detection is based on jailbreak/emulator status.
 
-### DevelopmentMode
+#### Development Mode
 
-* -Development Options in emulator always is true for default
+* Development Options in emulator is always `true` by default.
 
 ## ❗Since emulators are usually rooted, you might want to bypass these checks during development. Unless you're keen on constant false alarms ⏰
