@@ -43,6 +43,7 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   # PR açıldığında otomatik review
   claude-pr-review:
@@ -63,6 +64,7 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           direct_prompt: |
             Bu pull request'i kapsamlı şekilde incele ve şunları değerlendir:
             - Kod kalitesi ve best practices
@@ -90,6 +92,7 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           direct_prompt: |
             Bu push ile gelen değişiklikleri incele:
             - Yeni eklenen kodda bug veya güvenlik açığı var mı?
