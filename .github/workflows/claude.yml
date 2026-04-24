@@ -1,7 +1,6 @@
 name: Claude Code Review
 
 on:
-  # @claude ile manuel tetikleme
   issue_comment:
     types: [created]
   pull_request_review_comment:
@@ -10,17 +9,10 @@ on:
     types: [opened]
   pull_request_review:
     types: [submitted]
-  # PR açıldığında veya güncellendiğinde otomatik review
   pull_request:
     types: [opened, synchronize, reopened]
-  # main'e push'ta otomatik review
-  push:
-    branches:
-      - main
-      - master
 
 jobs:
-  # @claude ile tetiklenen işler
   claude-mention:
     if: |
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
@@ -45,7 +37,6 @@ jobs:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  # PR açıldığında otomatik review
   claude-pr-review:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -72,30 +63,3 @@ jobs:
             - Performans sorunları
             - Eksik hata yönetimi
             Bulgularını PR yorumu olarak ekle.
-
-  # main'e push'ta otomatik review
-  claude-push-review:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-      issues: write
-      id-token: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Run Claude Code Push Review
-        uses: anthropics/claude-code-action@beta
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          direct_prompt: |
-            Bu push ile gelen değişiklikleri incele:
-            - Yeni eklenen kodda bug veya güvenlik açığı var mı?
-            - Kod standartlarına uyuluyor mu?
-            - İyileştirme önerilerin varsa belirt.
-            Bulgularını özet halinde yaz.
