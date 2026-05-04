@@ -12,64 +12,76 @@
 
 #pragma mark - Jailbreak Detection Paths
 
-/// Paths under /var or /private/var check literally
-static NSArray<NSString *> * const jailbreakVarPaths = @[
-    @"/private/var/lib/apt",
-    @"/private/var/tmp/cydia.log",
-    @"/private/var/lib/dpkg",
-    @"/var/cache/apt",
-    @"/var/lib/cydia",
-    @"/var/log/syslog",
-    @"/var/lib/dpkg/status",
-    // Palera1n rootless jailbreak indicators
-    @"/var/jb/.installed_palera1n",
-    @"/var/jb/usr/bin/su",
-    @"/var/jb/usr/lib/apt"
-];
++ (NSArray<NSString *> *)jailbreakVarPaths {
+    static NSArray<NSString *> *paths = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        paths = @[
+            @"/private/var/lib/apt",
+            @"/private/var/tmp/cydia.log",
+            @"/private/var/lib/dpkg",
+            @"/var/cache/apt",
+            @"/var/lib/cydia",
+            @"/var/log/syslog",
+            @"/var/lib/dpkg/status",
+            // Palera1n rootless jailbreak indicators
+            @"/var/jb/.installed_palera1n",
+            @"/var/jb/usr/bin/su",
+            @"/var/jb/usr/lib/apt"
+        ];
+    });
+    return paths;
+}
 
-/// Paths checked literally and with /var/jb prefix
-static NSArray<NSString *> * const jailbreakNonVarPaths = @[
-    // Cydia and package managers
-    @"/Applications/Cydia.app",
-    @"/Applications/RockApp.app",
-    @"/Applications/Icy.app",
-    @"/Applications/WinterBoard.app",
-    @"/Applications/SBSettings.app",
-    @"/Applications/blackra1n.app",
-    @"/Applications/IntelliScreen.app",
-    @"/Applications/Snoop-itConfig.app",
-    
-    // System binaries commonly found on jailbroken devices
-    // Note: /bin/sh is intentionally excluded — it exists on stock iOS 16+ devices
-    @"/bin/bash",
-    @"/usr/sbin/sshd",
-    @"/usr/libexec/sftp-server",
-    @"/usr/libexec/ssh-keysign",
-    
-    // MobileSubstrate and related files
-    @"/Library/MobileSubstrate/MobileSubstrate.dylib",
-    @"/Library/MobileSubstrate/DynamicLibraries/LiveClock.plist",
-    @"/Library/MobileSubstrate/DynamicLibraries/Veency.plist",
-    
-    // APT package manager
-    @"/etc/apt",
-    
-    // Launch daemons
-    @"/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist",
-    @"/System/Library/LaunchDaemons/com.ikey.bbot.plist",
-    
-    // Additional common jailbreak paths
-    @"/usr/sbin/frida-server",
-    @"/usr/bin/cycript",
-    @"/usr/local/bin/cycript",
-    @"/usr/lib/libcycript.dylib",
-    @"/etc/ssh/sshd_config",
-    @"/Applications/Terminal.app",
-    @"/Applications/iFile.app",
-    @"/Applications/Filza.app",
-    @"/usr/bin/dpkg",
-    @"/usr/sbin/dpkg"
-];
++ (NSArray<NSString *> *)jailbreakNonVarPaths {
+    static NSArray<NSString *> *paths = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        paths = @[
+            // Cydia and package managers
+            @"/Applications/Cydia.app",
+            @"/Applications/RockApp.app",
+            @"/Applications/Icy.app",
+            @"/Applications/WinterBoard.app",
+            @"/Applications/SBSettings.app",
+            @"/Applications/blackra1n.app",
+            @"/Applications/IntelliScreen.app",
+            @"/Applications/Snoop-itConfig.app",
+
+            // System binaries commonly found on jailbroken devices
+            // Note: /bin/sh is intentionally excluded — it exists on stock iOS 16+ devices
+            @"/bin/bash",
+            @"/usr/sbin/sshd",
+            @"/usr/libexec/sftp-server",
+            @"/usr/libexec/ssh-keysign",
+
+            // MobileSubstrate and related files
+            @"/Library/MobileSubstrate/MobileSubstrate.dylib",
+            @"/Library/MobileSubstrate/DynamicLibraries/LiveClock.plist",
+            @"/Library/MobileSubstrate/DynamicLibraries/Veency.plist",
+
+            // APT package manager
+            @"/etc/apt",
+
+            // Launch daemons
+            @"/System/Library/LaunchDaemons/com.saurik.Cydia.Startup.plist",
+            @"/System/Library/LaunchDaemons/com.ikey.bbot.plist",
+
+            // Additional common jailbreak paths
+            @"/usr/sbin/frida-server",
+            @"/usr/bin/cycript",
+            @"/usr/local/bin/cycript",
+            @"/usr/lib/libcycript.dylib",
+            @"/etc/ssh/sshd_config",
+            @"/Applications/Terminal.app",
+            @"/Applications/iFile.app",
+            @"/Applications/Filza.app",
+            @"/usr/bin/dpkg",
+            @"/usr/sbin/dpkg"
+        ];
+    });
+    return paths;
+}
 
 /// Common jailbreak tool and application paths
 + (NSArray<NSString *> *)jailbreakPaths {
@@ -77,8 +89,8 @@ static NSArray<NSString *> * const jailbreakNonVarPaths = @[
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSMutableArray<NSString *> *expanded = [NSMutableArray array];
-        [expanded addObjectsFromArray:jailbreakVarPaths];
-        for (NSString *path in jailbreakNonVarPaths) {
+        [expanded addObjectsFromArray:[self jailbreakVarPaths]];
+        for (NSString *path in [self jailbreakNonVarPaths]) {
             [expanded addObject:path];
             [expanded addObject:[@"/var/jb" stringByAppendingString:path]];
         }
