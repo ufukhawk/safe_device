@@ -147,8 +147,11 @@
     }
     
     // Check for URL schemes
-    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"cydia://"]]) {
-        return YES;
+      NSArray *schemes = @[@"cydia://", @"sileo://", @"palera1n://"];
+    for (NSString *scheme in schemes) {
+        if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:scheme]]) {
+            return YES;
+        }
     }
     
     return NO;
