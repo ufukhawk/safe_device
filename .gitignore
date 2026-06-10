@@ -5,3 +5,8 @@
 .pub/
 
 build/
+.build/
+dist/
+coverage/
+.idea/
+.vscode/

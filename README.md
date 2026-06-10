@@ -14,6 +14,16 @@ dependencies:
   safe_device: ^1.3.10
 ```
 
+### Swift Package Manager
+
+This plugin also supports iOS integration through Swift Package Manager.
+
+1. In Xcode, add a package dependency using this repository.
+2. Select the `safe_device` library product.
+3. Ensure your app target also includes Flutter as a linked framework/module.
+
+> When `DTTJailbreakDetection` is not provided through an SPM package or Xcode dependency, the plugin falls back to the custom jailbreak detection implementation.
+
 ## Usage
 
 #### Importing package
