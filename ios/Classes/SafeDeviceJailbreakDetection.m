@@ -1,3 +1,4 @@
+//
 //  SafeDeviceJailbreakDetection.m
 //  safe_device
 //
@@ -337,4 +338,4 @@
     };
 }
 
-@end
+@end 
