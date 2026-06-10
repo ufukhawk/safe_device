@@ -182,12 +182,19 @@
   dttResult = [DTTJailbreakDetection isJailbroken];
 #endif
 
-  return @{@"isSimulator" : @((BOOL)TARGET_OS_SIMULATOR),
-           @"isDevelopmentEnvironment" : @(isDev),
-           @"hasLegitimateEnvironmentVariables" : @(hasLegitEnvVars),
-           @"hasObviousJailbreakSigns" : @(obviousJailbreak),
-           @"dttResult" : @(dttResult),
-
-           -(BOOL)isRealDevice{return !TARGET_OS_SIMULATOR;
+  return @{
+    @"isSimulator" : @((BOOL)TARGET_OS_SIMULATOR),
+    @"isDevelopmentEnvironment" : @(isDev),
+    @"hasLegitimateEnvironmentVariables" : @(hasLegitEnvVars),
+    @"hasObviousJailbreakSigns" : @(obviousJailbreak),
+    @"dttResult" : @(dttResult),
+    @"customResult" : @([SafeDeviceJailbreakDetection isJailbroken]),
+    @"finalResult" : @([self isJailBroken])
+  };
 }
+
+- (BOOL)isRealDevice {
+  return !TARGET_OS_SIMULATOR;
+}
+
 @end
