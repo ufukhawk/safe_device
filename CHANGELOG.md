@@ -1,3 +1,7 @@
+## Unreleased
+
+* iOS: Add Swift Package Manager (SPM) support alongside CocoaPods. Resolves the "plugin does not support Swift Package Manager" warning under Flutter 3.44+. Addresses [#94](https://github.com/ufukhawk/safe_device/issues/94).
+
 ## 1.3.10
 
 * Fixed build error: `checkTestKeys()` method was missing from `RootedCheck.java` — the call in `getRootDetectionDetails()` now uses an inline `Build.TAGS` check instead.

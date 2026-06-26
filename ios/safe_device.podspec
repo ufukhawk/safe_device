@@ -12,8 +12,8 @@ Jailbroken, root, emulator and mock location detection
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Ufuk Zimmerman' => 'ufukzimmerman@gmail.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files = 'safe_device/Sources/safe_device/**/*.{h,m}'
+  s.public_header_files = 'safe_device/Sources/safe_device/include/**/*.h'
   s.dependency 'Flutter'
   s.dependency 'DTTJailbreakDetection'
   s.platform = :ios, '9.0'
