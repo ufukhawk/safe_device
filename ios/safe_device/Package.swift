@@ -25,7 +25,16 @@ let package = Package(
         .target(
             name: "DTTJailbreakDetection",
             path: "Sources/DTTJailbreakDetection",
-            publicHeadersPath: "include/DTTJailbreakDetection"
+            // publicHeadersPath defaults to "include". The header lives at
+            // include/DTTJailbreakDetection/DTTJailbreakDetection.h, so the public
+            // header's path is DTTJailbreakDetection/DTTJailbreakDetection.h, which is
+            // what `#import <DTTJailbreakDetection/DTTJailbreakDetection.h>` resolves to.
+            publicHeadersPath: "include",
+            // The .m file imports its header by bare name ("DTTJailbreakDetection.h"),
+            // so add the header's directory to the search path.
+            cSettings: [
+                .headerSearchPath("include/DTTJailbreakDetection")
+            ]
         ),
         .target(
             name: "safe_device",
