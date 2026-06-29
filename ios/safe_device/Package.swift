@@ -3,6 +3,12 @@
 
 import PackageDescription
 
+// DTTJailbreakDetection is vendored into Sources/DTTJailbreakDetection/ instead of
+// pulled from https://github.com/thii/DTTJailbreakDetection.git, because that upstream
+// repository ships no Package.swift (it is a CocoaPods-only pod). Referencing it as a
+// remote SwiftPM dependency made resolution fail with
+// "the package manifest at '/Package.swift' cannot be accessed". The vendored copy is
+// the 0.4.0 source, byte-for-byte identical to the pod's Classes/.
 let package = Package(
     name: "safe_device",
     platforms: [
@@ -10,16 +16,21 @@ let package = Package(
         .iOS("12.0")
     ],
     products: [
-        .library(name: "safe-device", targets: ["safe_device"])
+        .library(name: "safe-device", targets: ["safe_device"]),
+        // Expose DTT as a product too, so consumers that reference it explicitly still link.
+        .library(name: "DTTJailbreakDetection", targets: ["DTTJailbreakDetection"])
     ],
-    dependencies: [
-        .package(url: "https://github.com/thii/DTTJailbreakDetection.git", from: "0.4.0")
-    ],
+    dependencies: [],
     targets: [
+        .target(
+            name: "DTTJailbreakDetection",
+            path: "Sources/DTTJailbreakDetection",
+            publicHeadersPath: "include/DTTJailbreakDetection"
+        ),
         .target(
             name: "safe_device",
             dependencies: [
-                .product(name: "DTTJailbreakDetection", package: "DTTJailbreakDetection")
+                "DTTJailbreakDetection"
             ],
             // Implementation (.m) files live in Sources/safe_device/, public headers
             // (.h) in Sources/safe_device/include/safe_device/. The header search path
