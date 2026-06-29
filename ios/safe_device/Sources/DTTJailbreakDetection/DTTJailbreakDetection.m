@@ -21,6 +21,7 @@
 //
 
 #import "DTTJailbreakDetection.h"
+#import <UIKit/UIKit.h>
 
 @implementation DTTJailbreakDetection
 
