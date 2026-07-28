@@ -8,7 +8,7 @@
 #import "SafeDeviceJailbreakDetection.h"
 #import <UIKit/UIKit.h>
 #import <SystemConfiguration/SystemConfiguration.h>
-
+#include <ifaddrs.h>
 @implementation SafeDeviceJailbreakDetection
 
 #pragma mark - Jailbreak Detection Paths
@@ -130,28 +130,34 @@
 #pragma mark - VPN Detection
 
 + (BOOL)isVPNConnected {
-    CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
-    if (!proxySettings) {
-        return NO;
-    }
-
-    NSDictionary *settings = (__bridge_transfer NSDictionary *)proxySettings;
-    NSDictionary *scopedSettings = settings[@"__SCOPED__"];
-    if (![scopedSettings isKindOfClass:[NSDictionary class]]) {
-        return NO;
-    }
-
-    for (NSString *key in scopedSettings.allKeys) {
-        if ([key hasPrefix:@"tap"] ||
-            [key hasPrefix:@"tun"] ||
-            [key hasPrefix:@"ppp"] ||
-            [key hasPrefix:@"ipsec"] ||
-            [key hasPrefix:@"utun"]) {
-            return YES;
+    BOOL isVPN = NO;
+    struct ifaddrs *interfaces = NULL;
+    struct ifaddrs *temp_addr = NULL;
+    
+    // Retrieve the current interfaces - returns 0 on success
+    if (getifaddrs(&interfaces) == 0) {
+        // Loop through linked list of interfaces
+        temp_addr = interfaces;
+        while (temp_addr != NULL) {
+            if (temp_addr->ifa_addr != NULL && (temp_addr->ifa_addr->sa_family == AF_INET || temp_addr->ifa_addr->sa_family == AF_INET6)) {
+                NSString *interfaceName = [NSString stringWithUTF8String:temp_addr->ifa_name];
+                if ([interfaceName containsString:@"tap"] ||
+                    [interfaceName containsString:@"tun"] ||
+                    [interfaceName containsString:@"ppp"] ||
+                    [interfaceName containsString:@"ipsec"] ||
+                    [interfaceName containsString:@"utun"]) {
+                    isVPN = YES;
+                    break;
+                }
+            }
+            temp_addr = temp_addr->ifa_next;
         }
     }
-
-    return NO;
+    
+    // Free memory
+    freeifaddrs(interfaces);
+    
+    return isVPN;
 }
 
 #pragma mark - Main Detection Method

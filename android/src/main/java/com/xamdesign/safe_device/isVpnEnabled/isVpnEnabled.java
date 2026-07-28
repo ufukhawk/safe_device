@@ -22,12 +22,14 @@ public class IsVpnEnabled {
             return false;
         }
 
-        Network network = connectivityManager.getActiveNetwork();
-        if (network == null) {
-            return false;
+        Network[] networks = connectivityManager.getAllNetworks();
+        for (Network network : networks) {
+            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+            if (capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) {
+                return true;
+            }
         }
-
-        NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
-        return capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
+        
+        return false;
     }
 }
