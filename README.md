@@ -2,7 +2,7 @@
 
 <a href="https://pub.dev/packages/safe_device"><img src="https://img.shields.io/badge/pub-1.4.1-blue" alt="Safe Device" height="18"></a>
 <img src="https://imgur.com/Vw4Z93n.png" alt="Safe Device">
-Flutter (Null-Safety) Jailbroken, root, emulator and mock location detection.
+Flutter (Null-Safety) Jailbroken, root, emulator, mock location, and VPN detection.
 
 ## Getting Started
 
@@ -65,10 +65,16 @@ Checks whether device is real or emulator
 bool isRealDevice = await SafeDevice.isRealDevice;
 ```
 
-bool isMockLocation = await SafeDevice.isMockLocation;
+Checks whether mock location is active
 
 ```
 bool isMockLocation = await SafeDevice.isMockLocation;
+```
+
+Check whether VPN connection is active on device
+
+```
+bool isVpnActive = await SafeDevice.isVpnEnabled();
 ```
 
 **Android:** If mock location check is disabled via config, the check always returns `false` and no location updates are started. If enabled (default), the check is active.

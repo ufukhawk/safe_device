@@ -7,6 +7,7 @@
 
 #import "SafeDeviceJailbreakDetection.h"
 #import <UIKit/UIKit.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 
 @implementation SafeDeviceJailbreakDetection
 
@@ -124,6 +125,33 @@
 #else
     return NO;
 #endif
+}
+
+#pragma mark - VPN Detection
+
++ (BOOL)isVPNConnected {
+    CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
+    if (!proxySettings) {
+        return NO;
+    }
+
+    NSDictionary *settings = (__bridge_transfer NSDictionary *)proxySettings;
+    NSDictionary *scopedSettings = settings[@"__SCOPED__"];
+    if (![scopedSettings isKindOfClass:[NSDictionary class]]) {
+        return NO;
+    }
+
+    for (NSString *key in scopedSettings.allKeys) {
+        if ([key hasPrefix:@"tap"] ||
+            [key hasPrefix:@"tun"] ||
+            [key hasPrefix:@"ppp"] ||
+            [key hasPrefix:@"ipsec"] ||
+            [key hasPrefix:@"utun"]) {
+            return YES;
+        }
+    }
+
+    return NO;
 }
 
 #pragma mark - Main Detection Method
