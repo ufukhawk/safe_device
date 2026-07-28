@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
   bool isRealDevice = false;
   bool isOnExternalStorage = false;
   bool isSafeDevice = false;
-  bool isVpnActive = false;
+  bool isVpnEnabled = false;
   bool isDevelopmentModeEnable = false;
   Map<String, dynamic> jailbreakDetails = {};
   Map<String, dynamic> rootDetectionDetails = {};
@@ -41,6 +41,7 @@ class _MyAppState extends State<MyApp> {
       isOnExternalStorage = false;
       isSafeDevice = false;
       isDevelopmentModeEnable = false;
+      isVpnEnabled = false;
       jailbreakDetails = {};
       rootDetectionDetails = {};
     });
@@ -51,6 +52,7 @@ class _MyAppState extends State<MyApp> {
     isOnExternalStorage = await SafeDevice.isOnExternalStorage;
     isSafeDevice = await SafeDevice.isSafeDevice;
     isDevelopmentModeEnable = await SafeDevice.isDevelopmentModeEnable;
+    isVpnEnabled = await SafeDevice.isVpnEnabled;
     
 
     // iOS-specific enhanced jailbreak detection
@@ -66,6 +68,7 @@ class _MyAppState extends State<MyApp> {
 
     setState(() {
       this.isJailBroken = isJailBroken;
+      this.isVpnEnabled = isVpnEnabled;
       this.isJailBrokenCustom = isJailBrokenCustom;
       this.isMockLocation = isMockLocation;
       this.isRealDevice = isRealDevice;
@@ -111,10 +114,8 @@ class _MyAppState extends State<MyApp> {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8),
-        ElevatedButton(onPressed: () async {
-         isVpnActive = await SafeDevice.isVpnEnabled();
-        }, child: Text("VPN is ${isVpnActive}")),
         if (jailbreakDetails.containsKey('isSimulator'))
+
           Card(
             color: jailbreakDetails['isSimulator'] == true
                 ? Colors.blue.shade50
@@ -217,6 +218,7 @@ class _MyAppState extends State<MyApp> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     buildInfoRow('isJailBroken()', isJailBroken),
+                    buildInfoRow('isVpnEnabled()', isVpnEnabled),
                     if (Platform.isIOS) ...[
                       buildInfoRow('isJailBrokenCustom()', isJailBrokenCustom),
                     ],

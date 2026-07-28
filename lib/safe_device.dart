@@ -166,7 +166,7 @@ class SafeDevice {
     return {}; // iOS devices return empty map for Android-specific method
   }
 
-  static Future<bool> isVpnEnabled() async {
+  static Future<bool> get  isVpnEnabled async {
     ensureInitiated();
     try {
       return await _channel.invokeMethod<bool>('isVpnEnabled') ?? false;
