@@ -165,4 +165,14 @@ class SafeDevice {
     }
     return {}; // iOS devices return empty map for Android-specific method
   }
+
+  static Future<bool> get  isVpnEnabled async {
+    ensureInitiated();
+    try {
+      return await _channel.invokeMethod<bool>('isVpnEnabled') ?? false;
+    } catch (e) {
+      print('Error checking VPN status: $e');
+      return false;
+    }
+  }
 }

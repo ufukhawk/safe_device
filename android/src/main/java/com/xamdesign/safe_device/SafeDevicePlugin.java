@@ -11,6 +11,7 @@ import com.xamdesign.safe_device.ExternalStorage.ExternalStorageCheck;
 import com.xamdesign.safe_device.MockLocation.LocationAssistant;
 import com.xamdesign.safe_device.Rooted.RootedCheck;
 import com.xamdesign.safe_device.SafeDeviceConfig;
+import com.xamdesign.safe_device.isVpnEnabled.IsVpnEnabled;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
@@ -85,6 +86,8 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodChannel.MethodCall
             }
         } else if (call.method.equals("rootDetectionDetails")) {
             result.success(RootedCheck.getRootDetectionDetails(context));
+        } else if (call.method.equals("isVpnEnabled")) {
+            result.success(IsVpnEnabled.isVpnActive(context));
         } else if (call.method.equals("init")) {
             @SuppressWarnings("unchecked")
             Map<String, Object> configMap = (Map<String, Object>) call.arguments;

@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Main jailbreak detection method
 + (BOOL)isJailbroken;
 
+/// Check whether a VPN connection is currently active.
++ (BOOL)isVPNConnected;
+
 /// Get detailed breakdown of jailbreak detection methods
 + (NSDictionary<NSString *, NSNumber *> *)getJailbreakDetails;
 

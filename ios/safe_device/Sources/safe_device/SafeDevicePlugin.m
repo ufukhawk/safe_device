@@ -28,6 +28,8 @@
     result([NSNumber numberWithBool:[self isJailBrokenCustom]]);
   }else if ([@"jailbreakDetails" isEqualToString:call.method]) {
     result([self jailbreakDetails]);
+  }else if ([@"isVpnEnabled" isEqualToString:call.method]) {
+    result([NSNumber numberWithBool:[SafeDeviceJailbreakDetection isVPNConnected]]);
   }else if ([@"canMockLocation" isEqualToString:call.method]) {
     //For now we have returned if device is Jail Broken or if it's not real device. There is no
     //strong detection of Mock location in iOS
@@ -176,6 +178,7 @@
         @"hasObviousJailbreakSigns": @(obviousJailbreak),
         @"dttResult": @([DTTJailbreakDetection isJailbroken]),
         @"customResult": @([SafeDeviceJailbreakDetection isJailbroken]),
+        @"isVpnConnected": @([SafeDeviceJailbreakDetection isVPNConnected]),
         @"finalResult": @([self isJailBroken])
     };
 }
