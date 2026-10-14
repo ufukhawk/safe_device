@@ -1,3 +1,7 @@
+## Unreleased
+
+* Android: Removed the `.MockLocation.MainActivity` declaration from the plugin's `AndroidManifest.xml`. The plugin ships no such class (the `MockLocation` package contains only `LocationAssistant`), so every app merged a component that could only fail with `ClassNotFoundException: Didn't find class "com.xamdesign.safe_device.MockLocation.MainActivity"` when something resolved it. Mock location detection never used it. Resolves [#71](https://github.com/ufukhawk/safe_device/issues/71) and [#95](https://github.com/ufukhawk/safe_device/issues/95).
+
 ## 1.4.1
 
 * iOS: Fix Xcode failing to resolve Swift Package Manager dependencies with `the package manifest at '/Package.swift' cannot be accessed` when building on Flutter 3.44.2/3.44.4. `DTTJailbreakDetection` is now vendored directly into the `safe_device` SPM package instead of being referenced as a remote dependency, since its upstream repository ships no `Package.swift` of its own.
