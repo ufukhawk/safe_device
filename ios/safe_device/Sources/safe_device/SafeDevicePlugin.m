@@ -3,6 +3,7 @@
 #import "SafeDeviceJailbreakDetection.h"
 #import <DTTJailbreakDetection/DTTJailbreakDetection.h>
 #import <UIKit/UIKit.h>
+#import <TargetConditionals.h>
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -103,8 +104,8 @@
 }
 
 - (BOOL)isJailBroken {
-    // Mac Catalyst apps run on macOS — not jailbroken
-    #if TARGET_OS_MACCATALYST
+    // Simulator and Mac Catalyst use the host filesystem, not a physical iOS device.
+    #if TARGET_OS_SIMULATOR || TARGET_OS_MACCATALYST
     return NO;
     #endif
 
@@ -130,6 +131,11 @@
 }
 
 - (BOOL)hasObviousJailbreakSigns {
+    // Host macOS paths and URL schemes are not evidence of an iOS jailbreak.
+    #if TARGET_OS_SIMULATOR || TARGET_OS_MACCATALYST
+    return NO;
+    #endif
+
     // Check for obvious jailbreak files
     NSArray *jailbreakPaths = @[
         @"/Applications/Cydia.app",
@@ -155,6 +161,10 @@
 }
 
 - (BOOL)isJailBrokenCustom {
+    #if TARGET_OS_SIMULATOR || TARGET_OS_MACCATALYST
+    return NO;
+    #endif
+
     // Custom detection with development environment awareness
     if ([self isDevelopmentEnvironment]) {
         return [self hasObviousJailbreakSigns];
